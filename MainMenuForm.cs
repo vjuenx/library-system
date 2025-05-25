@@ -119,7 +119,7 @@ namespace SimpleWindowsForm
             this.btnBorrowManagement.Location = new Point(270, 190);
             this.btnBorrowManagement.Name = "btnBorrowManagement";
             this.btnBorrowManagement.Size = new Size(200, 50);
-            this.btnBorrowManagement.Text = "📖 Ödünç Verme";
+            this.btnBorrowManagement.Text = "📖 Ödünç Alma";
             this.btnBorrowManagement.UseVisualStyleBackColor = false;
             this.btnBorrowManagement.Click += new EventHandler(this.btnBorrowManagement_Click);
 
@@ -233,8 +233,8 @@ namespace SimpleWindowsForm
 
         private void btnBorrowManagement_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Ödünç verme sistemi henüz geliştirilmedi.", "Bilgi", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var borrowForm = new BorrowManagementForm();
+            borrowForm.ShowDialog();
         }
 
         private void btnReports_Click(object sender, EventArgs e)
