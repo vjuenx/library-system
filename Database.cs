@@ -4,6 +4,8 @@ using SimpleWindowsForm.Data;
 using SimpleWindowsForm.Models;
 using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleWindowsForm
 {
@@ -29,8 +31,12 @@ namespace SimpleWindowsForm
             {
                 dbContext = new AppDbContext();
                 
-                // Veritabanını oluştur (migration olmadan)
+                // Veritabanını sil ve yeniden oluştur (geliştirme aşamasında)
+                dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
+                
+                // Varsayılan admin kullanıcısı oluştur
+                CreateDefaultUsers();
                 
                 // Test verisi ekle (eğer tablo boşsa)
                 if (!dbContext.Students.Any())
@@ -50,6 +56,85 @@ namespace SimpleWindowsForm
             catch (Exception ex)
             {
                 throw new Exception($"Entity Framework veritabanı başlatılamadı: {ex.Message}");
+            }
+        }
+
+        private void CreateDefaultUsers()
+        {
+            using (var context = new AppDbContext())
+            {
+                // Eğer hiç kullanıcı yoksa varsayılan kullanıcıları oluştur
+                if (!context.Users.Any())
+                {
+                    var defaultUsers = new List<User>
+                    {
+                        new User
+                        {
+                            Username = "admin",
+                            Password = "123456", // Gerçek projede hash'lenmiş olmalı
+                            Role = "Admin",
+                            FullName = "Sistem Yöneticisi",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new User
+                        {
+                            Username = "librarian",
+                            Password = "123456",
+                            Role = "Librarian",
+                            FullName = "Kütüphaneci",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new User
+                        {
+                            Username = "user",
+                            Password = "123456",
+                            Role = "User",
+                            FullName = "Normal Kullanıcı",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        }
+                    };
+
+                    context.Users.AddRange(defaultUsers);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        // Kullanıcı doğrulama
+        public User? AuthenticateUser(string username, string password)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Users.FirstOrDefault(u => 
+                        u.Username == username && 
+                        u.Password == password && 
+                        u.IsActive);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        // Kullanıcı sayısını al
+        public int GetUserCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Users.Count(u => u.IsActive);
+                }
+            }
+            catch
+            {
+                return 0;
             }
         }
 

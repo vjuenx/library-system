@@ -12,7 +12,9 @@ namespace SimpleWindowsForm
         private Button button1;
         private Label dbStatusLabel;
         private Label efStatusLabel;
+        private Label userInfoLabel;
         private Database database;
+        private User currentUser;
 
         // CRUD işlemleri için kontroller
         private TextBox txtName;
@@ -26,9 +28,11 @@ namespace SimpleWindowsForm
         private Label lblName;
         private Label lblStudentNumber;
         private Label lblEmail;
+        private Button btnLogout;
 
-        public Form1()
+        public Form1(User? user)
         {
+            currentUser = user ?? new User { FullName = "Bilinmeyen", Role = "User" };
             InitializeComponent();
             InitializeDatabase();
         }
@@ -43,8 +47,13 @@ namespace SimpleWindowsForm
                 
                 // Entity Framework durumunu göster
                 int studentCount = database.GetStudentCount();
-                efStatusLabel.Text = $"✅ Entity Framework: Aktif ({studentCount} öğrenci)";
+                int userCount = database.GetUserCount();
+                efStatusLabel.Text = $"✅ Entity Framework: Aktif ({studentCount} öğrenci, {userCount} kullanıcı)";
                 efStatusLabel.ForeColor = Color.Green;
+
+                // Kullanıcı bilgilerini göster
+                userInfoLabel.Text = $"👤 Hoş geldiniz: {currentUser.FullName} ({currentUser.Role})";
+                userInfoLabel.ForeColor = Color.DarkBlue;
 
                 // Öğrenci listesini yükle
                 LoadStudents();
@@ -65,6 +74,8 @@ namespace SimpleWindowsForm
             this.button1 = new Button();
             this.dbStatusLabel = new Label();
             this.efStatusLabel = new Label();
+            this.userInfoLabel = new Label();
+            this.btnLogout = new Button();
             
             // CRUD kontrolleri
             this.lblName = new Label();
@@ -90,14 +101,38 @@ namespace SimpleWindowsForm
             this.label1.Name = "label1";
             this.label1.Size = new Size(300, 24);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Entity Framework CRUD İşlemleri";
+            this.label1.Text = "Kütüphane Yönetim Sistemi";
+
+            // 
+            // userInfoLabel
+            // 
+            this.userInfoLabel.AutoSize = true;
+            this.userInfoLabel.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            this.userInfoLabel.Location = new Point(20, 40);
+            this.userInfoLabel.Name = "userInfoLabel";
+            this.userInfoLabel.Size = new Size(200, 17);
+            this.userInfoLabel.TabIndex = 12;
+            this.userInfoLabel.Text = "👤 Kullanıcı bilgisi yükleniyor...";
+
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.BackColor = Color.LightCoral;
+            this.btnLogout.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            this.btnLogout.Location = new Point(400, 10);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new Size(80, 30);
+            this.btnLogout.TabIndex = 13;
+            this.btnLogout.Text = "Çıkış Yap";
+            this.btnLogout.UseVisualStyleBackColor = false;
+            this.btnLogout.Click += new EventHandler(this.btnLogout_Click);
 
             // 
             // dbStatusLabel
             // 
             this.dbStatusLabel.AutoSize = true;
             this.dbStatusLabel.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            this.dbStatusLabel.Location = new Point(20, 40);
+            this.dbStatusLabel.Location = new Point(20, 65);
             this.dbStatusLabel.Name = "dbStatusLabel";
             this.dbStatusLabel.Size = new Size(200, 15);
             this.dbStatusLabel.TabIndex = 2;
@@ -108,7 +143,7 @@ namespace SimpleWindowsForm
             // 
             this.efStatusLabel.AutoSize = true;
             this.efStatusLabel.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            this.efStatusLabel.Location = new Point(20, 60);
+            this.efStatusLabel.Location = new Point(20, 85);
             this.efStatusLabel.Name = "efStatusLabel";
             this.efStatusLabel.Size = new Size(200, 15);
             this.efStatusLabel.TabIndex = 3;
@@ -119,7 +154,7 @@ namespace SimpleWindowsForm
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new Point(20, 100);
+            this.lblName.Location = new Point(20, 120);
             this.lblName.Name = "lblName";
             this.lblName.Size = new Size(28, 15);
             this.lblName.Text = "Ad:";
@@ -127,7 +162,7 @@ namespace SimpleWindowsForm
             // 
             // txtName
             // 
-            this.txtName.Location = new Point(120, 97);
+            this.txtName.Location = new Point(120, 117);
             this.txtName.Name = "txtName";
             this.txtName.Size = new Size(200, 23);
             this.txtName.TabIndex = 4;
@@ -136,7 +171,7 @@ namespace SimpleWindowsForm
             // lblStudentNumber
             // 
             this.lblStudentNumber.AutoSize = true;
-            this.lblStudentNumber.Location = new Point(20, 130);
+            this.lblStudentNumber.Location = new Point(20, 150);
             this.lblStudentNumber.Name = "lblStudentNumber";
             this.lblStudentNumber.Size = new Size(85, 15);
             this.lblStudentNumber.Text = "Öğrenci No:";
@@ -144,7 +179,7 @@ namespace SimpleWindowsForm
             // 
             // txtStudentNumber
             // 
-            this.txtStudentNumber.Location = new Point(120, 127);
+            this.txtStudentNumber.Location = new Point(120, 147);
             this.txtStudentNumber.Name = "txtStudentNumber";
             this.txtStudentNumber.Size = new Size(200, 23);
             this.txtStudentNumber.TabIndex = 5;
@@ -153,7 +188,7 @@ namespace SimpleWindowsForm
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new Point(20, 160);
+            this.lblEmail.Location = new Point(20, 180);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new Size(39, 15);
             this.lblEmail.Text = "Email:";
@@ -161,7 +196,7 @@ namespace SimpleWindowsForm
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new Point(120, 157);
+            this.txtEmail.Location = new Point(120, 177);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new Size(200, 23);
             this.txtEmail.TabIndex = 6;
@@ -171,7 +206,7 @@ namespace SimpleWindowsForm
             // btnCreate
             // 
             this.btnCreate.BackColor = Color.LightGreen;
-            this.btnCreate.Location = new Point(20, 200);
+            this.btnCreate.Location = new Point(20, 220);
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.Size = new Size(70, 30);
             this.btnCreate.TabIndex = 7;
@@ -183,7 +218,7 @@ namespace SimpleWindowsForm
             // btnRead
             // 
             this.btnRead.BackColor = Color.LightBlue;
-            this.btnRead.Location = new Point(100, 200);
+            this.btnRead.Location = new Point(100, 220);
             this.btnRead.Name = "btnRead";
             this.btnRead.Size = new Size(70, 30);
             this.btnRead.TabIndex = 8;
@@ -195,7 +230,7 @@ namespace SimpleWindowsForm
             // btnUpdate
             // 
             this.btnUpdate.BackColor = Color.LightYellow;
-            this.btnUpdate.Location = new Point(180, 200);
+            this.btnUpdate.Location = new Point(180, 220);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new Size(70, 30);
             this.btnUpdate.TabIndex = 9;
@@ -207,7 +242,7 @@ namespace SimpleWindowsForm
             // btnDelete
             // 
             this.btnDelete.BackColor = Color.LightCoral;
-            this.btnDelete.Location = new Point(260, 200);
+            this.btnDelete.Location = new Point(260, 220);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new Size(70, 30);
             this.btnDelete.TabIndex = 10;
@@ -220,9 +255,9 @@ namespace SimpleWindowsForm
             // 
             this.lstStudents.FormattingEnabled = true;
             this.lstStudents.ItemHeight = 15;
-            this.lstStudents.Location = new Point(20, 250);
+            this.lstStudents.Location = new Point(20, 270);
             this.lstStudents.Name = "lstStudents";
-            this.lstStudents.Size = new Size(400, 150);
+            this.lstStudents.Size = new Size(460, 150);
             this.lstStudents.TabIndex = 11;
             this.lstStudents.SelectedIndexChanged += new EventHandler(this.lstStudents_SelectedIndexChanged);
 
@@ -230,9 +265,9 @@ namespace SimpleWindowsForm
             // button1
             // 
             this.button1.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            this.button1.Location = new Point(350, 40);
+            this.button1.Location = new Point(350, 220);
             this.button1.Name = "button1";
-            this.button1.Size = new Size(120, 35);
+            this.button1.Size = new Size(130, 30);
             this.button1.TabIndex = 1;
             this.button1.Text = "EF Durumunu Kontrol Et";
             this.button1.UseVisualStyleBackColor = true;
@@ -243,7 +278,9 @@ namespace SimpleWindowsForm
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(500, 430);
+            this.ClientSize = new Size(500, 450);
+            this.Controls.Add(this.btnLogout);
+            this.Controls.Add(this.userInfoLabel);
             this.Controls.Add(this.lstStudents);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
@@ -260,10 +297,22 @@ namespace SimpleWindowsForm
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Entity Framework CRUD Projesi";
+            this.Text = "Kütüphane Yönetim Sistemi - Ana Panel";
             this.StartPosition = FormStartPosition.CenterScreen;
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+
+        // Çıkış yap butonu
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Çıkış yapmak istediğinizden emin misiniz?", 
+                "Çıkış Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            
+            if (result == DialogResult.Yes)
+            {
+                Application.Restart();
+            }
         }
 
         // CREATE - Yeni öğrenci ekle
@@ -455,7 +504,8 @@ namespace SimpleWindowsForm
         private void UpdateStudentCount()
         {
             int studentCount = database.GetStudentCount();
-            efStatusLabel.Text = $"✅ Entity Framework: Aktif ({studentCount} öğrenci)";
+            int userCount = database.GetUserCount();
+            efStatusLabel.Text = $"✅ Entity Framework: Aktif ({studentCount} öğrenci, {userCount} kullanıcı)";
         }
 
         // EF Durum kontrolü
@@ -465,10 +515,13 @@ namespace SimpleWindowsForm
             {
                 string dbPath = database.GetDatabasePath();
                 int studentCount = database.GetStudentCount();
+                int userCount = database.GetUserCount();
                 
                 MessageBox.Show($"✅ Entity Framework bağlantısı başarılı!\n\n" +
                     $"Veritabanı konumu:\n{dbPath}\n\n" +
-                    $"Toplam öğrenci sayısı: {studentCount}", 
+                    $"Toplam öğrenci sayısı: {studentCount}\n" +
+                    $"Toplam kullanıcı sayısı: {userCount}\n\n" +
+                    $"Aktif kullanıcı: {currentUser.FullName} ({currentUser.Role})", 
                     "Entity Framework Durumu", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else

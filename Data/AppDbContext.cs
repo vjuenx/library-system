@@ -6,6 +6,7 @@ namespace SimpleWindowsForm.Data
     public class AppDbContext : DbContext
     {
         public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,6 +28,21 @@ namespace SimpleWindowsForm.Data
                 
                 // Unique constraint for student number
                 entity.HasIndex(e => e.StudentNumber).IsUnique();
+            });
+
+            // User tablosu için konfigürasyon
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Username).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Password).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Role).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.FullName).HasMaxLength(100);
+                entity.Property(e => e.IsActive).IsRequired();
+                entity.Property(e => e.CreatedDate).IsRequired();
+                
+                // Unique constraint for username
+                entity.HasIndex(e => e.Username).IsUnique();
             });
 
             base.OnModelCreating(modelBuilder);
