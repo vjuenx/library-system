@@ -13,6 +13,7 @@ namespace SimpleWindowsForm
         private Button btnStudentManagement;
         private Button btnBookManagement;
         private Button btnBorrowManagement;
+        private Button btnReservationManagement;
         private Button btnSettings;
         private Button btnLogout;
         private User currentUser;
@@ -47,6 +48,7 @@ namespace SimpleWindowsForm
             this.btnStudentManagement = new Button();
             this.btnBookManagement = new Button();
             this.btnBorrowManagement = new Button();
+            this.btnReservationManagement = new Button();
             this.btnSettings = new Button();
             this.btnLogout = new Button();
             this.SuspendLayout();
@@ -122,11 +124,23 @@ namespace SimpleWindowsForm
             this.btnBorrowManagement.Click += new EventHandler(this.btnBorrowManagement_Click);
 
             // 
+            // btnReservationManagement
+            // 
+            this.btnReservationManagement.BackColor = Color.LightGray;
+            this.btnReservationManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnReservationManagement.Location = new Point(50, 260);
+            this.btnReservationManagement.Name = "btnReservationManagement";
+            this.btnReservationManagement.Size = new Size(200, 50);
+            this.btnReservationManagement.Text = "📅 Rezervasyonlar";
+            this.btnReservationManagement.UseVisualStyleBackColor = false;
+            this.btnReservationManagement.Click += new EventHandler(this.btnReservationManagement_Click);
+
+            // 
             // btnSettings
             // 
             this.btnSettings.BackColor = Color.LightGray;
             this.btnSettings.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnSettings.Location = new Point(160, 260);
+            this.btnSettings.Location = new Point(270, 260);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new Size(200, 50);
             this.btnSettings.Text = "⚙️ Ayarlar";
@@ -152,9 +166,10 @@ namespace SimpleWindowsForm
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.BackColor = Color.WhiteSmoke;
-            this.ClientSize = new Size(520, 350);
+            this.ClientSize = new Size(520, 380);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnSettings);
+            this.Controls.Add(this.btnReservationManagement);
             this.Controls.Add(this.btnBorrowManagement);
             this.Controls.Add(this.btnBookManagement);
             this.Controls.Add(this.btnStudentManagement);
@@ -179,12 +194,16 @@ namespace SimpleWindowsForm
                 case "admin":
                     // Admin tüm işlemleri yapabilir
                     btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
+                    btnReservationManagement.Enabled = true;
+                    btnReservationManagement.BackColor = Color.LightGray;
                     break;
                 case "librarian":
                     // Kütüphaneci görevli yönetimi yapamaz
                     btnEmployeeManagement.Enabled = false;
                     btnEmployeeManagement.BackColor = Color.Gray;
                     btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
+                    btnReservationManagement.Enabled = true;
+                    btnReservationManagement.BackColor = Color.LightGray;
                     break;
                 case "user":
                     // Normal kullanıcı sadece kitap arama ve ödünç alma yapabilir
@@ -197,6 +216,8 @@ namespace SimpleWindowsForm
                     btnBorrowManagement.Text = "📖 Ödünç Alma";
                     btnBorrowManagement.Enabled = true;
                     btnBorrowManagement.BackColor = Color.LightCoral;
+                    btnReservationManagement.Enabled = false;
+                    btnReservationManagement.BackColor = Color.Gray;
                     btnSettings.Enabled = false;
                     btnSettings.BackColor = Color.Gray;
                     break;
@@ -235,6 +256,12 @@ namespace SimpleWindowsForm
                 var borrowRecordForm = new BorrowRecordManagementForm(currentUser, database);
                 borrowRecordForm.ShowDialog();
             }
+        }
+
+        private void btnReservationManagement_Click(object sender, EventArgs e)
+        {
+            var reservationForm = new ReservationManagementForm(currentUser, database);
+            reservationForm.ShowDialog();
         }
 
         private void btnSettings_Click(object sender, EventArgs e)

@@ -368,6 +368,54 @@ namespace SimpleWindowsForm
             }
         }
 
+        // Reservation metodları
+        public int GetReservationCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Reservations.Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int GetActiveReservationCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Reservations.Where(r => r.IsActive && !r.IsFulfilled).Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int GetExpiredReservationCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Reservations
+                        .Where(r => r.IsActive && !r.IsFulfilled && r.ExpiryDate < DateTime.Now)
+                        .Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         // Eski SQLite bağlantısı (geriye uyumluluk için)
         public SqliteConnection GetConnection()
         {
