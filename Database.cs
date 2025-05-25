@@ -89,6 +89,62 @@ namespace SimpleWindowsForm
                     dbContext.Employees.AddRange(testEmployees);
                     dbContext.SaveChanges();
                 }
+
+                // Test kitap verisi ekle (eğer tablo boşsa)
+                if (!dbContext.Books.Any())
+                {
+                    var testBooks = new List<Book>
+                    {
+                        new Book
+                        {
+                            Title = "Suç ve Ceza",
+                            Author = "Fyodor Dostoyevski",
+                            ISBN = "9789750719387",
+                            Publisher = "İş Bankası Kültür Yayınları",
+                            PublicationYear = 2019,
+                            Category = "Klasik Edebiyat",
+                            ShelfLocation = "A1",
+                            TotalCopies = 3,
+                            AvailableCopies = 3,
+                            IsActive = true,
+                            Description = "Rus edebiyatının başyapıtlarından biri",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Book
+                        {
+                            Title = "1984",
+                            Author = "George Orwell",
+                            ISBN = "9789750738265",
+                            Publisher = "Can Yayınları",
+                            PublicationYear = 2020,
+                            Category = "Distopya",
+                            ShelfLocation = "B2",
+                            TotalCopies = 2,
+                            AvailableCopies = 1,
+                            IsActive = true,
+                            Description = "Totaliter rejimler hakkında ünlü distopik roman",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Book
+                        {
+                            Title = "Algoritma ve Programlama",
+                            Author = "Mehmet Özkan",
+                            ISBN = "9786052112458",
+                            Publisher = "Seçkin Yayıncılık",
+                            PublicationYear = 2021,
+                            Category = "Bilgisayar Bilimleri",
+                            ShelfLocation = "C3",
+                            TotalCopies = 5,
+                            AvailableCopies = 4,
+                            IsActive = true,
+                            Description = "Programlama temelleri ve algoritma tasarımı",
+                            CreatedDate = DateTime.Now
+                        }
+                    };
+                    
+                    dbContext.Books.AddRange(testBooks);
+                    dbContext.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -224,6 +280,38 @@ namespace SimpleWindowsForm
                 using (var context = new AppDbContext())
                 {
                     return context.Employees.Count(e => e.IsActive);
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // Entity Framework ile kitap sayısını al
+        public int GetBookCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Books.Count(b => b.IsActive);
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // Mevcut kitap sayısını al
+        public int GetAvailableBookCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Books.Where(b => b.IsActive).Sum(b => b.AvailableCopies);
                 }
             }
             catch

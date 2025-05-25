@@ -205,6 +205,8 @@ namespace SimpleWindowsForm
                     btnEmployeeManagement.BackColor = Color.Gray;
                     btnStudentManagement.Enabled = false;
                     btnStudentManagement.BackColor = Color.Gray;
+                    btnBookManagement.Enabled = false;
+                    btnBookManagement.BackColor = Color.Gray;
                     btnSettings.Enabled = false;
                     btnSettings.BackColor = Color.Gray;
                     break;
@@ -225,8 +227,8 @@ namespace SimpleWindowsForm
 
         private void btnBookManagement_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Kitap yönetimi henüz geliştirilmedi.", "Bilgi", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var bookForm = new BookManagementForm();
+            bookForm.ShowDialog();
         }
 
         private void btnBorrowManagement_Click(object sender, EventArgs e)

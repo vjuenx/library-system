@@ -42,4 +42,29 @@ packages/
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-artifacts/ 
+artifacts/
+
+# .NET
+*.user
+*.cache
+*.dll
+*.exe
+*.pdb
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Visual Studio
+*.userprefs
+
+# Entity Framework
+*.db-shm
+*.db-wal
+
+# Installer dosyaları (çok büyük)
+KutuphaneInstaller/
+*.zip
+e_sqlite3.dll 

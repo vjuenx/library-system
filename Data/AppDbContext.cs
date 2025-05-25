@@ -8,6 +8,7 @@ namespace SimpleWindowsForm.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Book> Books { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -63,6 +64,27 @@ namespace SimpleWindowsForm.Data
                 
                 // Unique constraint for employee number
                 entity.HasIndex(e => e.EmployeeNumber).IsUnique();
+            });
+
+            // Book tablosu için konfigürasyon
+            modelBuilder.Entity<Book>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Title).IsRequired().HasMaxLength(200);
+                entity.Property(e => e.Author).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.ISBN).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Publisher).HasMaxLength(100);
+                entity.Property(e => e.PublicationYear).IsRequired();
+                entity.Property(e => e.Category).HasMaxLength(50);
+                entity.Property(e => e.ShelfLocation).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.TotalCopies).IsRequired();
+                entity.Property(e => e.AvailableCopies).IsRequired();
+                entity.Property(e => e.IsActive).IsRequired();
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.CreatedDate).IsRequired();
+                
+                // Unique constraint for ISBN
+                entity.HasIndex(e => e.ISBN).IsUnique();
             });
 
             base.OnModelCreating(modelBuilder);
