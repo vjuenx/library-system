@@ -13,7 +13,6 @@ namespace SimpleWindowsForm
         private Button btnStudentManagement;
         private Button btnBookManagement;
         private Button btnBorrowManagement;
-        private Button btnReports;
         private Button btnSettings;
         private Button btnLogout;
         private User currentUser;
@@ -48,7 +47,6 @@ namespace SimpleWindowsForm
             this.btnStudentManagement = new Button();
             this.btnBookManagement = new Button();
             this.btnBorrowManagement = new Button();
-            this.btnReports = new Button();
             this.btnSettings = new Button();
             this.btnLogout = new Button();
             this.SuspendLayout();
@@ -124,23 +122,11 @@ namespace SimpleWindowsForm
             this.btnBorrowManagement.Click += new EventHandler(this.btnBorrowManagement_Click);
 
             // 
-            // btnReports
-            // 
-            this.btnReports.BackColor = Color.LightSalmon;
-            this.btnReports.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnReports.Location = new Point(50, 260);
-            this.btnReports.Name = "btnReports";
-            this.btnReports.Size = new Size(200, 50);
-            this.btnReports.Text = "📊 Raporlar";
-            this.btnReports.UseVisualStyleBackColor = false;
-            this.btnReports.Click += new EventHandler(this.btnReports_Click);
-
-            // 
             // btnSettings
             // 
             this.btnSettings.BackColor = Color.LightGray;
             this.btnSettings.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnSettings.Location = new Point(270, 260);
+            this.btnSettings.Location = new Point(160, 260);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new Size(200, 50);
             this.btnSettings.Text = "⚙️ Ayarlar";
@@ -169,7 +155,6 @@ namespace SimpleWindowsForm
             this.ClientSize = new Size(520, 350);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnSettings);
-            this.Controls.Add(this.btnReports);
             this.Controls.Add(this.btnBorrowManagement);
             this.Controls.Add(this.btnBookManagement);
             this.Controls.Add(this.btnStudentManagement);
@@ -235,12 +220,6 @@ namespace SimpleWindowsForm
         {
             var borrowForm = new BorrowManagementForm();
             borrowForm.ShowDialog();
-        }
-
-        private void btnReports_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Rapor sistemi henüz geliştirilmedi.", "Bilgi", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
