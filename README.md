@@ -27,15 +27,34 @@ Modern ve kullanıcı dostu bir Windows Forms kütüphane yönetim uygulaması. 
 ### 📚 Kitap Yönetimi
 - Kitap katalog sistemi
 - ISBN, yazar, yayınevi bilgileri
-- Kategori ve raf konumu takibi
+- **Kategori sistemi** ile organize edilmiş kitap koleksiyonu
+- Raf konumu takibi
 - Kopya sayısı ve müsaitlik durumu
 - Kitap açıklaması ve yayın yılı
+- **Kategori bazlı filtreleme** ve arama
+
+### 📋 Kategori Yönetimi
+- **Kitap kategorilerini organize etme**
+- Kategori ekleme, düzenleme, silme
+- Kategori açıklamaları
+- **Kategoriye bağlı kitap sayısı** takibi
+- Aktif/pasif kategori durumu
+- **Varsayılan kategoriler**: Klasik Edebiyat, Bilim Kurgu, Bilgisayar Bilimleri, Tarih, Felsefe, Çocuk Kitapları, Akademik
 
 ### 📖 Ödünç Alma Sistemi
-- Kitap arama ve filtreleme
-- Müsait kitapları görüntüleme
-- Ödünç alma işlemleri
-- Kitap durumu takibi
+- **Gelişmiş ödünç kayıt yönetimi**
+- Öğrenci ve kitap seçimi
+- Ödünç alma ve iade tarihleri
+- Gecikme ücreti hesaplama
+- **Aktif ödünç takibi**
+- **Geciken ödünçler** raporlama
+
+### 📅 Rezervasyon Sistemi
+- **Kitap rezervasyon yönetimi**
+- Rezervasyon oluşturma ve iptal etme
+- **Otomatik süre dolumu** kontrolü
+- Rezervasyon durumu takibi (Aktif, Tamamlandı, İptal, Süresi Dolmuş)
+- **Rezervasyon istatistikleri**
 
 ### ⚙️ Ayarlar ve Kişiselleştirme
 - **Uygulama Hakkında**: Versiyon ve iletişim bilgileri
@@ -50,7 +69,8 @@ Modern ve kullanıcı dostu bir Windows Forms kütüphane yönetim uygulaması. 
 - **Entity Framework Core 9.0** ile SQLite entegrasyonu
 - **Code First** yaklaşımı
 - **Otomatik veritabanı oluşturma**
-- **İlişkisel tablo yapısı**
+- **İlişkisel tablo yapısı** (7 tablo)
+- **Foreign Key ilişkileri** ve veri bütünlüğü
 
 ### Güvenlik
 - **Şifre korumalı giriş**
@@ -103,14 +123,20 @@ dotnet run
 ├── 📄 Form1.cs                     # Öğrenci yönetim formu
 ├── 📄 EmployeeManagementForm.cs    # Görevli yönetim formu
 ├── 📄 BookManagementForm.cs        # Kitap yönetim formu
+├── 📄 CategoryManagementForm.cs    # Kategori yönetim formu
 ├── 📄 BorrowManagementForm.cs      # Ödünç alma formu
+├── 📄 BorrowRecordManagementForm.cs # Ödünç kayıt yönetimi
+├── 📄 ReservationManagementForm.cs # Rezervasyon yönetimi
 ├── 📄 SettingsForm.cs              # Ayarlar formu
 ├── 📄 Database.cs                  # Veritabanı yönetimi
 ├── 📁 Models/                      # Veri modelleri
 │   ├── 📄 User.cs                  # Kullanıcı modeli
 │   ├── 📄 Student.cs               # Öğrenci modeli
 │   ├── 📄 Employee.cs              # Görevli modeli
-│   └── 📄 Book.cs                  # Kitap modeli
+│   ├── 📄 Book.cs                  # Kitap modeli
+│   ├── 📄 Category.cs              # Kategori modeli
+│   ├── 📄 BorrowRecord.cs          # Ödünç kayıt modeli
+│   └── 📄 Reservation.cs           # Rezervasyon modeli
 ├── 📁 Data/                        # Veritabanı context
 │   └── 📄 AppDbContext.cs          # EF DbContext
 ├── 📄 simple_ef_database.db        # SQLite veritabanı
@@ -130,8 +156,34 @@ Giriş yaptıktan sonra ana menüde şu seçenekler bulunur:
 - **👥 Görevli Yönetimi** (Sadece Admin)
 - **🎓 Öğrenci Yönetimi**
 - **📚 Kitap Yönetimi**
-- **📖 Ödünç Alma**
+- **📋 Kategori Yönetimi** (Admin/Kütüphaneci)
+- **📋 Ödünç Kayıtları** / **📖 Ödünç Alma** (Role göre)
+- **📅 Rezervasyonlar** (Admin/Kütüphaneci)
 - **⚙️ Ayarlar**
+
+### 📋 Kategori Yönetimi
+1. Ana menüden "📋 Kategori Yönetimi" seçin
+2. **Yeni Kategori Ekleme**:
+   - Kategori adını girin
+   - Açıklama ekleyin (opsiyonel)
+   - "➕ Ekle" butonuna tıklayın
+3. **Kategori Güncelleme**:
+   - Listeden kategori seçin
+   - Bilgileri düzenleyin
+   - "✏️ Güncelle" butonuna tıklayın
+4. **Kategori Silme**:
+   - Listeden kategori seçin
+   - "🗑️ Sil" butonuna tıklayın
+   - Onay verin
+
+### 📚 Kitap Yönetimi (Kategori ile)
+1. Ana menüden "📚 Kitap Yönetimi" seçin
+2. **Yeni Kitap Ekleme**:
+   - Kitap bilgilerini girin
+   - **Kategori seçin** (dropdown'dan)
+   - "➕ Ekle" butonuna tıklayın
+3. **Kitap Listesi**: Kategoriler ile birlikte görüntülenir
+4. **Kategori Filtreleme**: Kitaplar kategori adı ile listelenir
 
 ### 🎨 Tema Değiştirme
 1. Ana menüden "⚙️ Ayarlar" seçin
@@ -145,12 +197,15 @@ Giriş yaptıktan sonra ana menüde şu seçenekler bulunur:
 | Görevli Yönetimi | ✅ | ❌ | ❌ |
 | Öğrenci Yönetimi | ✅ | ✅ | ❌ |
 | Kitap Yönetimi | ✅ | ✅ | ❌ |
-| Ödünç Alma | ✅ | ✅ | ✅ |
+| **Kategori Yönetimi** | ✅ | ✅ | ❌ |
+| Ödünç Kayıt Yönetimi | ✅ | ✅ | ❌ |
+| Rezervasyon Yönetimi | ✅ | ✅ | ❌ |
+| Ödünç Alma (Kullanıcı) | ✅ | ✅ | ✅ |
 | Ayarlar | ✅ | ✅ | ❌ |
 
-## 🗄️ Veritabanı Şeması
+## 🗄️ Veritabanı Şeması (7 Tablo)
 
-### Users (Kullanıcılar)
+### 1. Users (Kullanıcılar)
 - `Id` (Primary Key)
 - `Username` (Unique)
 - `Password`
@@ -159,14 +214,14 @@ Giriş yaptıktan sonra ana menüde şu seçenekler bulunur:
 - `IsActive`
 - `CreatedDate`
 
-### Students (Öğrenciler)
+### 2. Students (Öğrenciler)
 - `Id` (Primary Key)
 - `Name`
 - `StudentNumber` (Unique)
 - `Email`
 - `CreatedDate`
 
-### Employees (Görevliler)
+### 3. Employees (Görevliler)
 - `Id` (Primary Key)
 - `FullName`
 - `EmployeeNumber` (Unique)
@@ -179,20 +234,53 @@ Giriş yaptıktan sonra ana menüde şu seçenekler bulunur:
 - `IsActive`
 - `CreatedDate`
 
-### Books (Kitaplar)
+### 4. Categories (Kategoriler) 🆕
+- `Id` (Primary Key)
+- `Name` (Unique)
+- `Description`
+- `IsActive`
+- `CreatedDate`
+
+### 5. Books (Kitaplar)
 - `Id` (Primary Key)
 - `Title`
 - `Author`
 - `ISBN` (Unique)
 - `Publisher`
 - `PublicationYear`
-- `Category`
+- `CategoryId` (Foreign Key → Categories) 🆕
 - `ShelfLocation`
 - `TotalCopies`
 - `AvailableCopies`
 - `Description`
 - `IsActive`
 - `CreatedDate`
+- `UpdatedDate`
+
+### 6. BorrowRecords (Ödünç Kayıtları)
+- `Id` (Primary Key)
+- `StudentId` (Foreign Key → Students)
+- `BookId` (Foreign Key → Books)
+- `BorrowDate`
+- `DueDate`
+- `ReturnDate`
+- `IsReturned`
+- `LateFee`
+- `CreatedBy` (Foreign Key → Users)
+- `CreatedDate`
+
+### 7. Reservations (Rezervasyonlar)
+- `Id` (Primary Key)
+- `StudentId` (Foreign Key → Students)
+- `BookId` (Foreign Key → Books)
+- `ReservationDate`
+- `ExpiryDate`
+- `IsActive`
+- `IsFulfilled`
+- `FulfilledDate`
+- `CreatedBy` (Foreign Key → Users)
+- `CreatedDate`
+- `Notes`
 
 ## 🔧 Geliştirme
 
@@ -207,7 +295,31 @@ Giriş yaptıktan sonra ana menüde şu seçenekler bulunur:
 - `Database.cs`'de `EnsureCreated()` ile otomatik oluşturma
 - Test verileri otomatik eklenir
 
+## 📊 Varsayılan Test Verileri
+
+### Kategoriler
+- **Klasik Edebiyat**: Dünya edebiyatının klasik eserleri
+- **Bilim Kurgu**: Bilim kurgu ve fantastik romanlar
+- **Bilgisayar Bilimleri**: Programlama, algoritma ve teknoloji kitapları
+- **Tarih**: Tarih ve biyografi kitapları
+- **Felsefe**: Felsefe ve düşünce kitapları
+- **Çocuk Kitapları**: Çocuklar için hikaye ve eğitici kitaplar
+- **Akademik**: Üniversite ve akademik çalışma kitapları
+
+### Örnek Kitaplar
+- **Suç ve Ceza** (Klasik Edebiyat)
+- **1984** (Bilim Kurgu)
+- **Algoritma ve Programlama** (Bilgisayar Bilimleri)
+
 ## 📝 Sürüm Geçmişi
+
+- **v2.0.0** - Kategori Sistemi Güncellemesi 🆕
+  - **Kategori yönetimi** eklendi
+  - **Book-Category ilişkisi** kuruldu
+  - **Ödünç kayıt sistemi** geliştirildi
+  - **Rezervasyon sistemi** eklendi
+  - **7 tablo** ile tam veritabanı yapısı
+  - **Gelişmiş kullanıcı yetkilendirmesi**
 
 - **v1.0.0** - İlk sürüm
   - Temel CRUD işlemleri
@@ -235,4 +347,4 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ---
 
-**🎉 Kütüphane Yönetim Sistemi - Modern, Güvenli, Kullanıcı Dostu!** 
+**🎉 Kütüphane Yönetim Sistemi v2.0 - Modern, Güvenli, Kategori Destekli!** 
