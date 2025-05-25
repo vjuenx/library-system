@@ -9,6 +9,7 @@ namespace SimpleWindowsForm.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<BorrowRecord> BorrowRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -85,6 +86,37 @@ namespace SimpleWindowsForm.Data
                 
                 // Unique constraint for ISBN
                 entity.HasIndex(e => e.ISBN).IsUnique();
+            });
+
+            // BorrowRecord tablosu için konfigürasyon
+            modelBuilder.Entity<BorrowRecord>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.StudentId).IsRequired();
+                entity.Property(e => e.BookId).IsRequired();
+                entity.Property(e => e.BorrowDate).IsRequired();
+                entity.Property(e => e.DueDate).IsRequired();
+                entity.Property(e => e.ReturnDate);
+                entity.Property(e => e.IsReturned).IsRequired();
+                entity.Property(e => e.LateFee).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.CreatedBy).IsRequired();
+                entity.Property(e => e.CreatedDate).IsRequired();
+
+                // Foreign key relationships
+                entity.HasOne(e => e.Student)
+                    .WithMany()
+                    .HasForeignKey(e => e.StudentId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.Book)
+                    .WithMany()
+                    .HasForeignKey(e => e.BookId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.CreatedByUser)
+                    .WithMany()
+                    .HasForeignKey(e => e.CreatedBy)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             base.OnModelCreating(modelBuilder);

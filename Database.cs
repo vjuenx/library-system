@@ -295,7 +295,7 @@ namespace SimpleWindowsForm
             {
                 using (var context = new AppDbContext())
                 {
-                    return context.Books.Count(b => b.IsActive);
+                    return context.Books.Count();
                 }
             }
             catch
@@ -311,7 +311,55 @@ namespace SimpleWindowsForm
             {
                 using (var context = new AppDbContext())
                 {
-                    return context.Books.Where(b => b.IsActive).Sum(b => b.AvailableCopies);
+                    return context.Books.Where(b => b.AvailableCopies > 0).Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // BorrowRecord metodları
+        public int GetBorrowRecordCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.BorrowRecords.Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int GetActiveBorrowCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.BorrowRecords.Where(br => !br.IsReturned).Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int GetOverdueBorrowCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.BorrowRecords
+                        .Where(br => !br.IsReturned && br.DueDate < DateTime.Now)
+                        .Count();
                 }
             }
             catch

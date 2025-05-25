@@ -117,7 +117,7 @@ namespace SimpleWindowsForm
             this.btnBorrowManagement.Location = new Point(270, 190);
             this.btnBorrowManagement.Name = "btnBorrowManagement";
             this.btnBorrowManagement.Size = new Size(200, 50);
-            this.btnBorrowManagement.Text = "📖 Ödünç Alma";
+            this.btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
             this.btnBorrowManagement.UseVisualStyleBackColor = false;
             this.btnBorrowManagement.Click += new EventHandler(this.btnBorrowManagement_Click);
 
@@ -178,11 +178,13 @@ namespace SimpleWindowsForm
             {
                 case "admin":
                     // Admin tüm işlemleri yapabilir
+                    btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
                     break;
                 case "librarian":
                     // Kütüphaneci görevli yönetimi yapamaz
                     btnEmployeeManagement.Enabled = false;
                     btnEmployeeManagement.BackColor = Color.Gray;
+                    btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
                     break;
                 case "user":
                     // Normal kullanıcı sadece kitap arama ve ödünç alma yapabilir
@@ -192,6 +194,9 @@ namespace SimpleWindowsForm
                     btnStudentManagement.BackColor = Color.Gray;
                     btnBookManagement.Enabled = false;
                     btnBookManagement.BackColor = Color.Gray;
+                    btnBorrowManagement.Text = "📖 Ödünç Alma";
+                    btnBorrowManagement.Enabled = true;
+                    btnBorrowManagement.BackColor = Color.LightCoral;
                     btnSettings.Enabled = false;
                     btnSettings.BackColor = Color.Gray;
                     break;
@@ -218,8 +223,18 @@ namespace SimpleWindowsForm
 
         private void btnBorrowManagement_Click(object sender, EventArgs e)
         {
-            var borrowForm = new BorrowManagementForm();
-            borrowForm.ShowDialog();
+            if (currentUser.Role.ToLower() == "user")
+            {
+                // Normal kullanıcı için kitap arama/görüntüleme formu
+                var borrowForm = new BorrowManagementForm();
+                borrowForm.ShowDialog();
+            }
+            else
+            {
+                // Admin/Librarian için ödünç kayıtları yönetim formu
+                var borrowRecordForm = new BorrowRecordManagementForm(currentUser, database);
+                borrowRecordForm.ShowDialog();
+            }
         }
 
         private void btnSettings_Click(object sender, EventArgs e)
