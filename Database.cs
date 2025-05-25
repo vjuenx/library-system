@@ -52,6 +52,43 @@ namespace SimpleWindowsForm
                     dbContext.Students.Add(testStudent);
                     dbContext.SaveChanges();
                 }
+
+                // Test görevli verisi ekle (eğer tablo boşsa)
+                if (!dbContext.Employees.Any())
+                {
+                    var testEmployees = new List<Employee>
+                    {
+                        new Employee
+                        {
+                            FullName = "Ahmet Yılmaz",
+                            EmployeeNumber = "EMP001",
+                            Email = "ahmet.yilmaz@kutuphane.com",
+                            Phone = "0532 123 4567",
+                            Department = "Kütüphane",
+                            Position = "Kütüphaneci",
+                            Salary = 15000,
+                            HireDate = DateTime.Now.AddYears(-2),
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Employee
+                        {
+                            FullName = "Fatma Demir",
+                            EmployeeNumber = "EMP002",
+                            Email = "fatma.demir@kutuphane.com",
+                            Phone = "0533 987 6543",
+                            Department = "Kütüphane",
+                            Position = "Kıdemli Kütüphaneci",
+                            Salary = 18000,
+                            HireDate = DateTime.Now.AddYears(-5),
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        }
+                    };
+                    
+                    dbContext.Employees.AddRange(testEmployees);
+                    dbContext.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -171,6 +208,22 @@ namespace SimpleWindowsForm
                 using (var context = new AppDbContext())
                 {
                     return context.Students.Count();
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // Entity Framework ile görevli sayısını al
+        public int GetEmployeeCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Employees.Count(e => e.IsActive);
                 }
             }
             catch

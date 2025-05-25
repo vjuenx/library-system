@@ -19,9 +19,9 @@ namespace SimpleWindowsForm
             {
                 if (loginForm.ShowDialog() == DialogResult.OK)
                 {
-                    // Login başarılı ise ana formu aç
-                    var mainForm = new Form1(loginForm.LoggedInUser);
-                    Application.Run(mainForm);
+                    // Login başarılı ise ana menü formunu aç
+                    var mainMenuForm = new MainMenuForm(loginForm.LoggedInUser);
+                    Application.Run(mainMenuForm);
                 }
                 // Login başarısız ise uygulama kapanır
             }

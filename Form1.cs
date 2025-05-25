@@ -123,7 +123,7 @@ namespace SimpleWindowsForm
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new Size(80, 30);
             this.btnLogout.TabIndex = 13;
-            this.btnLogout.Text = "Çıkış Yap";
+            this.btnLogout.Text = "🔙 Ana Menü";
             this.btnLogout.UseVisualStyleBackColor = false;
             this.btnLogout.Click += new EventHandler(this.btnLogout_Click);
 
@@ -306,12 +306,12 @@ namespace SimpleWindowsForm
         // Çıkış yap butonu
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Çıkış yapmak istediğinizden emin misiniz?", 
-                "Çıkış Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = MessageBox.Show("Ana menüye dönmek istediğinizden emin misiniz?", 
+                "Ana Menüye Dön", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             
             if (result == DialogResult.Yes)
             {
-                Application.Restart();
+                this.Close(); // Sadece bu formu kapat, ana menüye dön
             }
         }
 

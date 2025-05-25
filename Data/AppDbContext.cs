@@ -7,6 +7,7 @@ namespace SimpleWindowsForm.Data
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,6 +44,25 @@ namespace SimpleWindowsForm.Data
                 
                 // Unique constraint for username
                 entity.HasIndex(e => e.Username).IsUnique();
+            });
+
+            // Employee tablosu için konfigürasyon
+            modelBuilder.Entity<Employee>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.FullName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.EmployeeNumber).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Email).HasMaxLength(200);
+                entity.Property(e => e.Phone).HasMaxLength(20);
+                entity.Property(e => e.Department).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Position).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Salary).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.HireDate).IsRequired();
+                entity.Property(e => e.IsActive).IsRequired();
+                entity.Property(e => e.CreatedDate).IsRequired();
+                
+                // Unique constraint for employee number
+                entity.HasIndex(e => e.EmployeeNumber).IsUnique();
             });
 
             base.OnModelCreating(modelBuilder);
