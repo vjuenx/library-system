@@ -48,6 +48,7 @@ namespace SimpleWindowsForm
         {
             InitializeComponent();
             InitializeDatabase();
+            LoadCategories();
             LoadBooks();
         }
 
@@ -142,12 +143,6 @@ namespace SimpleWindowsForm
             cmbCategory.Location = new Point(leftX + labelWidth, startY + rowHeight * 5);
             cmbCategory.Size = new Size(textWidth, 20);
             cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategory.Items.AddRange(new string[] {
-                "Klasik Edebiyat", "Modern Edebiyat", "Bilim Kurgu", "Fantastik",
-                "Tarih", "Bilim", "Felsefe", "Sanat", "Spor", "Sağlık",
-                "Bilgisayar Bilimleri", "Matematik", "Fizik", "Kimya",
-                "Çocuk Kitapları", "Gençlik", "Biyografi", "Seyahat", "Diğer"
-            });
 
             // Raf Konumu
             lblShelfLocation = new Label();
@@ -294,6 +289,7 @@ namespace SimpleWindowsForm
                 using (var context = database.GetDbContext())
                 {
                     var books = context.Books
+                        .Include(b => b.Category)
                         .Where(b => b.IsActive)
                         .OrderBy(b => b.Title)
                         .ToList();
@@ -322,6 +318,14 @@ namespace SimpleWindowsForm
                 {
                     using (var context = database.GetDbContext())
                     {
+                        // CategoryId'yi al
+                        int? categoryId = null;
+                        if (cmbCategory.SelectedIndex > 0) // "-- Kategori Seçin --" seçili değilse
+                        {
+                            string selectedText = cmbCategory.SelectedItem.ToString();
+                            categoryId = int.Parse(selectedText.Split('-')[0].Trim());
+                        }
+
                         var book = new Book
                         {
                             Title = txtTitle.Text.Trim(),
@@ -329,7 +333,7 @@ namespace SimpleWindowsForm
                             ISBN = txtISBN.Text.Trim(),
                             Publisher = txtPublisher.Text.Trim(),
                             PublicationYear = (int)nudYear.Value,
-                            Category = cmbCategory.Text,
+                            CategoryId = categoryId,
                             ShelfLocation = txtShelfLocation.Text.Trim().ToUpper(),
                             TotalCopies = (int)nudTotalCopies.Value,
                             AvailableCopies = (int)nudAvailableCopies.Value,
@@ -379,7 +383,7 @@ namespace SimpleWindowsForm
                             book.ISBN = txtISBN.Text.Trim();
                             book.Publisher = txtPublisher.Text.Trim();
                             book.PublicationYear = (int)nudYear.Value;
-                            book.Category = cmbCategory.Text;
+                            book.CategoryId = cmbCategory.SelectedIndex > 0 ? int.Parse(cmbCategory.SelectedItem.ToString().Split('-')[0].Trim()) : null;
                             book.ShelfLocation = txtShelfLocation.Text.Trim().ToUpper();
                             book.TotalCopies = (int)nudTotalCopies.Value;
                             book.AvailableCopies = (int)nudAvailableCopies.Value;
@@ -463,7 +467,25 @@ namespace SimpleWindowsForm
                 txtISBN.Text = book.ISBN;
                 txtPublisher.Text = book.Publisher;
                 nudYear.Value = book.PublicationYear;
-                cmbCategory.Text = book.Category;
+                
+                // Kategori seçimi
+                if (book.CategoryId.HasValue)
+                {
+                    for (int i = 1; i < cmbCategory.Items.Count; i++) // 0. index "-- Kategori Seçin --"
+                    {
+                        string item = cmbCategory.Items[i].ToString();
+                        if (item.StartsWith($"{book.CategoryId} -"))
+                        {
+                            cmbCategory.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    cmbCategory.SelectedIndex = 0; // "-- Kategori Seçin --"
+                }
+                
                 txtShelfLocation.Text = book.ShelfLocation;
                 nudTotalCopies.Value = book.TotalCopies;
                 nudAvailableCopies.Value = book.AvailableCopies;
@@ -537,6 +559,28 @@ namespace SimpleWindowsForm
             txtDescription.Clear();
             chkIsActive.Checked = true;
             lstBooks.SelectedIndex = -1;
+        }
+
+        private void LoadCategories()
+        {
+            try
+            {
+                cmbCategory.Items.Clear();
+                cmbCategory.Items.Add("-- Kategori Seçin --");
+                
+                var categories = database.GetActiveCategories();
+                foreach (var category in categories)
+                {
+                    cmbCategory.Items.Add($"{category.Id} - {category.Name}");
+                }
+                
+                cmbCategory.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Kategoriler yüklenirken hata: {ex.Message}", "Hata", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 } 

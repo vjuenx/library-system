@@ -11,6 +11,7 @@ namespace SimpleWindowsForm.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<BorrowRecord> BorrowRecords { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -77,7 +78,7 @@ namespace SimpleWindowsForm.Data
                 entity.Property(e => e.ISBN).IsRequired().HasMaxLength(20);
                 entity.Property(e => e.Publisher).HasMaxLength(100);
                 entity.Property(e => e.PublicationYear).IsRequired();
-                entity.Property(e => e.Category).HasMaxLength(50);
+                entity.Property(e => e.CategoryId);
                 entity.Property(e => e.ShelfLocation).IsRequired().HasMaxLength(20);
                 entity.Property(e => e.TotalCopies).IsRequired();
                 entity.Property(e => e.AvailableCopies).IsRequired();
@@ -87,6 +88,25 @@ namespace SimpleWindowsForm.Data
                 
                 // Unique constraint for ISBN
                 entity.HasIndex(e => e.ISBN).IsUnique();
+                
+                // Foreign key relationship with Category
+                entity.HasOne(e => e.Category)
+                    .WithMany(c => c.Books)
+                    .HasForeignKey(e => e.CategoryId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Category tablosu için konfigürasyon
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Description).HasMaxLength(200);
+                entity.Property(e => e.IsActive).IsRequired();
+                entity.Property(e => e.CreatedDate).IsRequired();
+                
+                // Unique constraint for category name
+                entity.HasIndex(e => e.Name).IsUnique();
             });
 
             // BorrowRecord tablosu için konfigürasyon

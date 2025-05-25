@@ -93,6 +93,9 @@ namespace SimpleWindowsForm
                 // Test kitap verisi ekle (eğer tablo boşsa)
                 if (!dbContext.Books.Any())
                 {
+                    // Önce kategorileri oluştur
+                    CreateDefaultCategories();
+                    
                     var testBooks = new List<Book>
                     {
                         new Book
@@ -102,7 +105,7 @@ namespace SimpleWindowsForm
                             ISBN = "9789750719387",
                             Publisher = "İş Bankası Kültür Yayınları",
                             PublicationYear = 2019,
-                            Category = "Klasik Edebiyat",
+                            CategoryId = 1, // Klasik Edebiyat
                             ShelfLocation = "A1",
                             TotalCopies = 3,
                             AvailableCopies = 3,
@@ -117,7 +120,7 @@ namespace SimpleWindowsForm
                             ISBN = "9789750738265",
                             Publisher = "Can Yayınları",
                             PublicationYear = 2020,
-                            Category = "Distopya",
+                            CategoryId = 2, // Bilim Kurgu
                             ShelfLocation = "B2",
                             TotalCopies = 2,
                             AvailableCopies = 1,
@@ -132,7 +135,7 @@ namespace SimpleWindowsForm
                             ISBN = "9786052112458",
                             Publisher = "Seçkin Yayıncılık",
                             PublicationYear = 2021,
-                            Category = "Bilgisayar Bilimleri",
+                            CategoryId = 3, // Bilgisayar Bilimleri
                             ShelfLocation = "C3",
                             TotalCopies = 5,
                             AvailableCopies = 4,
@@ -191,6 +194,72 @@ namespace SimpleWindowsForm
                     };
 
                     context.Users.AddRange(defaultUsers);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        private void CreateDefaultCategories()
+        {
+            using (var context = new AppDbContext())
+            {
+                // Eğer hiç kategori yoksa varsayılan kategorileri oluştur
+                if (!context.Categories.Any())
+                {
+                    var defaultCategories = new List<Category>
+                    {
+                        new Category
+                        {
+                            Name = "Klasik Edebiyat",
+                            Description = "Dünya edebiyatının klasik eserleri",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Bilim Kurgu",
+                            Description = "Bilim kurgu ve fantastik romanlar",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Bilgisayar Bilimleri",
+                            Description = "Programlama, algoritma ve teknoloji kitapları",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Tarih",
+                            Description = "Tarih ve biyografi kitapları",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Felsefe",
+                            Description = "Felsefe ve düşünce kitapları",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Çocuk Kitapları",
+                            Description = "Çocuklar için hikaye ve eğitici kitaplar",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        },
+                        new Category
+                        {
+                            Name = "Akademik",
+                            Description = "Üniversite ve akademik çalışma kitapları",
+                            IsActive = true,
+                            CreatedDate = DateTime.Now
+                        }
+                    };
+
+                    context.Categories.AddRange(defaultCategories);
                     context.SaveChanges();
                 }
             }
@@ -413,6 +482,55 @@ namespace SimpleWindowsForm
             catch
             {
                 return 0;
+            }
+        }
+
+        // Category metodları
+        public int GetCategoryCount()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Categories.Count(c => c.IsActive);
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public int GetBookCountByCategory(int categoryId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Books.Count(b => b.CategoryId == categoryId && b.IsActive);
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        public List<Category> GetActiveCategories()
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Categories
+                        .Where(c => c.IsActive)
+                        .OrderBy(c => c.Name)
+                        .ToList();
+                }
+            }
+            catch
+            {
+                return new List<Category>();
             }
         }
 

@@ -23,8 +23,7 @@ namespace SimpleWindowsForm.Models
         
         public int PublicationYear { get; set; } // Yayın Yılı
         
-        [MaxLength(50)]
-        public string Category { get; set; } = string.Empty; // Kategori (Roman, Bilim, Tarih, vb.)
+        public int? CategoryId { get; set; } // Kategori Foreign Key
         
         [Required]
         [MaxLength(20)]
@@ -43,6 +42,9 @@ namespace SimpleWindowsForm.Models
         
         public DateTime? UpdatedDate { get; set; }
         
+        // Navigation property
+        public virtual Category? Category { get; set; }
+        
         // Hesaplanan özellik - Ödünç verilen kopya sayısı
         public int BorrowedCopies => TotalCopies - AvailableCopies;
         
@@ -52,7 +54,8 @@ namespace SimpleWindowsForm.Models
         // Görüntüleme için string
         public override string ToString()
         {
-            return $"{Title} - {Author} (ISBN: {ISBN}) - Raf: {ShelfLocation} - Mevcut: {AvailableCopies}/{TotalCopies}";
+            string categoryName = Category?.Name ?? "Kategori Yok";
+            return $"{Title} - {Author} ({categoryName}) - Raf: {ShelfLocation} - Mevcut: {AvailableCopies}/{TotalCopies}";
         }
     }
 } 
