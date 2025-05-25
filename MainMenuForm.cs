@@ -224,8 +224,8 @@ namespace SimpleWindowsForm
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Ayarlar henüz geliştirilmedi.", "Bilgi", 
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var settingsForm = new SettingsForm(currentUser);
+            settingsForm.ShowDialog();
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
