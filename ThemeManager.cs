@@ -219,6 +219,31 @@ namespace SimpleWindowsForm
                 button.BackColor = Color.FromArgb(80, 80, 80); // Koyu gri
                 button.ForeColor = Color.White;
             }
+            else if (button.Text.Contains("Yenile") || button.Text.Contains("🔄"))
+            {
+                button.BackColor = Color.FromArgb(255, 165, 0); // Koyu turuncu
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("Kapat") || button.Text.Contains("🔙"))
+            {
+                button.BackColor = Color.FromArgb(105, 105, 105); // Koyu gri
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("Rezerve Et") || button.Text.Contains("📅"))
+            {
+                button.BackColor = Color.FromArgb(0, 100, 200); // Koyu mavi
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("Tamamla") || button.Text.Contains("✅"))
+            {
+                button.BackColor = Color.FromArgb(0, 150, 0); // Koyu yeşil
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("İptal Et") || button.Text.Contains("❌"))
+            {
+                button.BackColor = Color.FromArgb(200, 0, 0); // Koyu kırmızı
+                button.ForeColor = Color.White;
+            }
             // CRUD butonları için renkler
             else if (button.BackColor == Color.LightGreen || button.Name.Contains("Add") || button.Text.Contains("Ekle"))
             {
@@ -289,6 +314,31 @@ namespace SimpleWindowsForm
             {
                 button.BackColor = Color.Plum; // Açık mor
                 button.ForeColor = Color.Black;
+            }
+            else if (button.Text.Contains("Yenile") || button.Text.Contains("🔄"))
+            {
+                button.BackColor = Color.Orange; // Açık turuncu
+                button.ForeColor = Color.Black;
+            }
+            else if (button.Text.Contains("Kapat") || button.Text.Contains("🔙"))
+            {
+                button.BackColor = Color.LightGray; // Açık gri
+                button.ForeColor = Color.Black;
+            }
+            else if (button.Text.Contains("Rezerve Et") || button.Text.Contains("📅"))
+            {
+                button.BackColor = Color.CornflowerBlue; // Açık mavi
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("Tamamla") || button.Text.Contains("✅"))
+            {
+                button.BackColor = Color.MediumSeaGreen; // Açık yeşil
+                button.ForeColor = Color.White;
+            }
+            else if (button.Text.Contains("İptal Et") || button.Text.Contains("❌"))
+            {
+                button.BackColor = Color.IndianRed; // Açık kırmızı
+                button.ForeColor = Color.White;
             }
             // CRUD butonları için renkler
             else if (button.Name.Contains("Add") || button.Text.Contains("Ekle"))

@@ -172,7 +172,7 @@ namespace SimpleWindowsForm
             this.btnLogout.BackColor = Color.IndianRed;
             this.btnLogout.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
             this.btnLogout.ForeColor = Color.White;
-            this.btnLogout.Location = new Point(370, 20);
+            this.btnLogout.Location = new Point(450, 20);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Size = new Size(100, 35);
             this.btnLogout.Text = "🚪 Çıkış Yap";
@@ -185,7 +185,7 @@ namespace SimpleWindowsForm
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.BackColor = Color.WhiteSmoke;
-            this.ClientSize = new Size(520, 450);
+            this.ClientSize = new Size(580, 450);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnCategoryManagement);

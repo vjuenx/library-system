@@ -206,37 +206,42 @@ namespace SimpleWindowsForm
             chkIsActive.Size = new Size(100, 20);
             chkIsActive.Checked = true;
 
-            // Butonlar
-            int buttonY = startY + rowHeight * 12;
-            int buttonWidth = 80;
-            int buttonSpacing = 90;
+            // Butonlar - Daha büyük ve düzenli
+            int buttonY = startY + rowHeight * 12 + 10;
+            int buttonWidth = 90;
+            int buttonHeight = 35;
+            int buttonSpacing = 100;
 
             btnAdd = new Button();
             btnAdd.Text = "➕ Ekle";
             btnAdd.Location = new Point(leftX, buttonY);
-            btnAdd.Size = new Size(buttonWidth, 30);
+            btnAdd.Size = new Size(buttonWidth, buttonHeight);
             btnAdd.BackColor = Color.LightGreen;
+            btnAdd.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
             btnAdd.Click += btnAdd_Click;
 
             btnUpdate = new Button();
             btnUpdate.Text = "✏️ Güncelle";
             btnUpdate.Location = new Point(leftX + buttonSpacing, buttonY);
-            btnUpdate.Size = new Size(buttonWidth, 30);
+            btnUpdate.Size = new Size(buttonWidth, buttonHeight);
             btnUpdate.BackColor = Color.LightBlue;
+            btnUpdate.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
             btnUpdate.Click += btnUpdate_Click;
 
             btnDelete = new Button();
             btnDelete.Text = "🗑️ Sil";
             btnDelete.Location = new Point(leftX + buttonSpacing * 2, buttonY);
-            btnDelete.Size = new Size(buttonWidth, 30);
+            btnDelete.Size = new Size(buttonWidth, buttonHeight);
             btnDelete.BackColor = Color.LightCoral;
+            btnDelete.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
             btnDelete.Click += btnDelete_Click;
 
             btnClear = new Button();
             btnClear.Text = "🧹 Temizle";
-            btnClear.Location = new Point(leftX, buttonY + 40);
-            btnClear.Size = new Size(buttonWidth, 30);
+            btnClear.Location = new Point(leftX, buttonY + 45);
+            btnClear.Size = new Size(buttonWidth, buttonHeight);
             btnClear.BackColor = Color.LightYellow;
+            btnClear.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
             btnClear.Click += btnClear_Click;
 
             // Sağ panel - Kitap listesi

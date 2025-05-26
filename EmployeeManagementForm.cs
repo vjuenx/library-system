@@ -48,6 +48,11 @@ namespace SimpleWindowsForm
             LoadEmployees();
             LoadDepartments();
             LoadPositions();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            // İlk tema uygulaması
+            ThemeManager.ApplyTheme(this);
         }
 
         private void InitializeComponent()
@@ -167,52 +172,54 @@ namespace SimpleWindowsForm
             this.chkIsActive.Text = "Aktif Görevli";
             this.chkIsActive.Checked = true;
 
-            // Butonlar
-            int btnY = startY + spacing * 9;
+            // Butonlar - Daha fazla boşluk bırakarak
+            int btnY = startY + spacing * 9 + 20; // 20px daha aşağı
+            int btnSpacing = 95; // Butonlar arası boşluk artırıldı
+            
             this.btnAdd.BackColor = Color.LightGreen;
             this.btnAdd.Location = new Point(leftX, btnY);
-            this.btnAdd.Size = new Size(80, 30);
+            this.btnAdd.Size = new Size(85, 35); // Buton boyutu artırıldı
             this.btnAdd.Text = "➕ Ekle";
             this.btnAdd.UseVisualStyleBackColor = false;
             this.btnAdd.Click += new EventHandler(this.btnAdd_Click);
 
             this.btnUpdate.BackColor = Color.LightYellow;
-            this.btnUpdate.Location = new Point(leftX + 90, btnY);
-            this.btnUpdate.Size = new Size(80, 30);
+            this.btnUpdate.Location = new Point(leftX + btnSpacing, btnY);
+            this.btnUpdate.Size = new Size(85, 35);
             this.btnUpdate.Text = "✏️ Güncelle";
             this.btnUpdate.UseVisualStyleBackColor = false;
             this.btnUpdate.Click += new EventHandler(this.btnUpdate_Click);
 
             this.btnDelete.BackColor = Color.LightCoral;
-            this.btnDelete.Location = new Point(leftX + 180, btnY);
-            this.btnDelete.Size = new Size(80, 30);
+            this.btnDelete.Location = new Point(leftX + btnSpacing * 2, btnY);
+            this.btnDelete.Size = new Size(85, 35);
             this.btnDelete.Text = "🗑️ Sil";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new EventHandler(this.btnDelete_Click);
 
             this.btnClear.BackColor = Color.LightBlue;
-            this.btnClear.Location = new Point(leftX + 270, btnY);
-            this.btnClear.Size = new Size(80, 30);
+            this.btnClear.Location = new Point(leftX + btnSpacing * 3, btnY);
+            this.btnClear.Size = new Size(85, 35);
             this.btnClear.Text = "🧹 Temizle";
             this.btnClear.UseVisualStyleBackColor = false;
             this.btnClear.Click += new EventHandler(this.btnClear_Click);
 
             // Görevli Listesi - Sağ taraf
-            int listX = 380;
+            int listX = 420; // Liste daha sağa kaydırıldı
             this.lblEmployeeCount.AutoSize = true;
             this.lblEmployeeCount.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
             this.lblEmployeeCount.Location = new Point(listX, startY);
             this.lblEmployeeCount.Text = "Görevli Listesi (0)";
 
             this.lstEmployees.Location = new Point(listX, startY + 25);
-            this.lstEmployees.Size = new Size(350, 250);
+            this.lstEmployees.Size = new Size(480, 280); // Liste boyutu artırıldı
             this.lstEmployees.SelectedIndexChanged += new EventHandler(this.lstEmployees_SelectedIndexChanged);
 
             // Kapat butonu
             this.btnClose.BackColor = Color.IndianRed;
             this.btnClose.ForeColor = Color.White;
             this.btnClose.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnClose.Location = new Point(650, 10);
+            this.btnClose.Location = new Point(820, 10); // Kapat butonu daha sağa
             this.btnClose.Size = new Size(80, 35);
             this.btnClose.Text = "❌ Kapat";
             this.btnClose.UseVisualStyleBackColor = false;
@@ -224,7 +231,7 @@ namespace SimpleWindowsForm
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.BackColor = Color.WhiteSmoke;
-            this.ClientSize = new Size(750, 400);
+            this.ClientSize = new Size(920, 450); // Form boyutu artırıldı
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lstEmployees);
             this.Controls.Add(this.lblEmployeeCount);
@@ -538,6 +545,19 @@ namespace SimpleWindowsForm
             dtpHireDate.Value = DateTime.Now;
             chkIsActive.Checked = true;
             lstEmployees.ClearSelected();
+        }
+        
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
     }
 } 

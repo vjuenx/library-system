@@ -42,6 +42,11 @@ namespace SimpleWindowsForm
             database = db;
             InitializeComponent();
             LoadData();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            // İlk tema uygulaması
+            ThemeManager.ApplyTheme(this);
         }
 
         private void InitializeComponent()
@@ -644,6 +649,19 @@ namespace SimpleWindowsForm
         private void lstReservations_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Seçilen rezervasyon için detay gösterebiliriz (opsiyonel)
+        }
+        
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
     }
 } 
