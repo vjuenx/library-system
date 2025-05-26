@@ -35,6 +35,11 @@ namespace SimpleWindowsForm
             InitializeComponent();
             InitializeDatabase();
             LoadCategories();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            // İlk tema uygulaması
+            ThemeManager.ApplyTheme(this);
         }
 
         private void InitializeDatabase()
@@ -375,6 +380,19 @@ namespace SimpleWindowsForm
             chkIsActive.Checked = true;
             selectedCategory = null;
             lstCategories.SelectedIndex = -1;
+        }
+        
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
     }
 } 

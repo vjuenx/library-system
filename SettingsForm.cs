@@ -22,13 +22,15 @@ namespace SimpleWindowsForm
         private Button btnClose;
         
         private User currentUser;
-        private bool isDarkTheme = false;
 
         public SettingsForm(User user)
         {
             currentUser = user;
             InitializeComponent();
             LoadCurrentTheme();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         private void InitializeComponent()
@@ -192,64 +194,31 @@ namespace SimpleWindowsForm
 
         private void LoadCurrentTheme()
         {
-            // Varsayılan olarak açık tema seçili
-            rbLightTheme.Checked = !isDarkTheme;
-            rbDarkTheme.Checked = isDarkTheme;
-            ApplyTheme();
+            // ThemeManager'dan mevcut temayı al
+            rbLightTheme.Checked = !ThemeManager.IsDarkTheme;
+            rbDarkTheme.Checked = ThemeManager.IsDarkTheme;
+            ThemeManager.ApplyTheme(this);
         }
 
         private void btnApplyTheme_Click(object sender, EventArgs e)
         {
-            isDarkTheme = rbDarkTheme.Checked;
-            ApplyTheme();
-            MessageBox.Show("✅ Tema başarıyla uygulandı!", "Tema Değişti", 
+            // Global tema yöneticisi ile temayı değiştir
+            ThemeManager.SetTheme(rbDarkTheme.Checked);
+            MessageBox.Show("✅ Tema başarıyla uygulandı! Tüm açık formlar güncellendi.", "Tema Değişti", 
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void ApplyTheme()
+        private void OnThemeChanged(object? sender, EventArgs e)
         {
-            if (isDarkTheme)
-            {
-                // Koyu tema
-                this.BackColor = Color.FromArgb(45, 45, 48);
-                this.ForeColor = Color.White;
-                
-                lblTitle.ForeColor = Color.LightBlue;
-                grpAbout.ForeColor = Color.White;
-                grpTheme.ForeColor = Color.White;
-                lblAppName.ForeColor = Color.LightGreen;
-                lblVersion.ForeColor = Color.LightGray;
-                lblDescription.ForeColor = Color.LightGray;
-                lblContact.ForeColor = Color.LightGray;
-                rbLightTheme.ForeColor = Color.White;
-                rbDarkTheme.ForeColor = Color.White;
-                
-                btnApplyTheme.BackColor = Color.FromArgb(0, 122, 204);
-                btnApplyTheme.ForeColor = Color.White;
-                btnClose.BackColor = Color.FromArgb(196, 43, 28);
-                btnClose.ForeColor = Color.White;
-            }
-            else
-            {
-                // Açık tema
-                this.BackColor = Color.WhiteSmoke;
-                this.ForeColor = Color.Black;
-                
-                lblTitle.ForeColor = Color.DarkBlue;
-                grpAbout.ForeColor = Color.Black;
-                grpTheme.ForeColor = Color.Black;
-                lblAppName.ForeColor = Color.DarkGreen;
-                lblVersion.ForeColor = Color.Black;
-                lblDescription.ForeColor = Color.Black;
-                lblContact.ForeColor = Color.Black;
-                rbLightTheme.ForeColor = Color.Black;
-                rbDarkTheme.ForeColor = Color.Black;
-                
-                btnApplyTheme.BackColor = Color.LightBlue;
-                btnApplyTheme.ForeColor = Color.Black;
-                btnClose.BackColor = Color.LightCoral;
-                btnClose.ForeColor = Color.Black;
-            }
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
 
         private void btnClose_Click(object sender, EventArgs e)

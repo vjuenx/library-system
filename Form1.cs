@@ -35,6 +35,11 @@ namespace SimpleWindowsForm
             currentUser = user ?? new User { FullName = "Bilinmeyen", Role = "User" };
             InitializeComponent();
             InitializeDatabase();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            // İlk tema uygulaması
+            ThemeManager.ApplyTheme(this);
         }
 
         private void InitializeDatabase()
@@ -529,6 +534,19 @@ namespace SimpleWindowsForm
                 MessageBox.Show("❌ Entity Framework bağlantısı başarısız!", 
                     "Bağlantı Testi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
     }
 } 

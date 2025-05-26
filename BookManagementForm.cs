@@ -50,6 +50,11 @@ namespace SimpleWindowsForm
             InitializeDatabase();
             LoadCategories();
             LoadBooks();
+            
+            // Tema değişikliği event'ini dinle
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            // İlk tema uygulaması
+            ThemeManager.ApplyTheme(this);
         }
 
         private void InitializeDatabase()
@@ -581,6 +586,19 @@ namespace SimpleWindowsForm
                 MessageBox.Show($"Kategoriler yüklenirken hata: {ex.Message}", "Hata", 
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+        private void OnThemeChanged(object? sender, EventArgs e)
+        {
+            // Tema değiştiğinde bu formu güncelle
+            ThemeManager.ApplyTheme(this);
+        }
+        
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            // Event listener'ı temizle
+            ThemeManager.ThemeChanged -= OnThemeChanged;
+            base.OnFormClosed(e);
         }
     }
 } 
