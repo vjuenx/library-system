@@ -59,133 +59,185 @@ namespace SimpleWindowsForm
             this.btnSettings = new Button();
             this.btnLogout = new Button();
             this.SuspendLayout();
+            
+            // Modern form ayarları
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
 
             // 
-            // lblTitle
+            // lblTitle - Modern başlık tasarımı
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            this.lblTitle.ForeColor = Color.DarkBlue;
-            this.lblTitle.Location = new Point(50, 20);
+            this.lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point);
+            this.lblTitle.ForeColor = Color.FromArgb(41, 128, 185);
+            this.lblTitle.Location = new Point(120, 30);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new Size(350, 29);
-            this.lblTitle.Text = "Kütüphane Yönetim Sistemi";
+            this.lblTitle.Size = new Size(450, 45);
+            this.lblTitle.Text = "📚 Kütüphane Yönetim Sistemi";
+            this.lblTitle.BackColor = Color.Transparent;
 
             // 
-            // lblUserInfo
+            // lblUserInfo - Modern kullanıcı bilgisi
             // 
             this.lblUserInfo.AutoSize = true;
-            this.lblUserInfo.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            this.lblUserInfo.ForeColor = Color.DarkGreen;
-            this.lblUserInfo.Location = new Point(50, 60);
+            this.lblUserInfo.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
+            this.lblUserInfo.ForeColor = Color.FromArgb(52, 152, 219);
+            this.lblUserInfo.Location = new Point(120, 85);
             this.lblUserInfo.Name = "lblUserInfo";
-            this.lblUserInfo.Size = new Size(200, 20);
-            this.lblUserInfo.Text = $"Hoş geldiniz, {currentUser.FullName}";
+            this.lblUserInfo.Size = new Size(300, 25);
+            this.lblUserInfo.Text = $"🎯 Hoş geldiniz, {currentUser.FullName}";
+            this.lblUserInfo.BackColor = Color.Transparent;
 
             // 
-            // btnEmployeeManagement
+            // btnEmployeeManagement - Modern card tasarımı
             // 
-            this.btnEmployeeManagement.BackColor = Color.LightBlue;
-            this.btnEmployeeManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnEmployeeManagement.Location = new Point(50, 120);
+            this.btnEmployeeManagement.BackColor = Color.FromArgb(52, 152, 219);
+            this.btnEmployeeManagement.FlatStyle = FlatStyle.Flat;
+            this.btnEmployeeManagement.FlatAppearance.BorderSize = 0;
+            this.btnEmployeeManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnEmployeeManagement.ForeColor = Color.White;
+            this.btnEmployeeManagement.Location = new Point(120, 140);
             this.btnEmployeeManagement.Name = "btnEmployeeManagement";
-            this.btnEmployeeManagement.Size = new Size(200, 50);
+            this.btnEmployeeManagement.Size = new Size(220, 70);
             this.btnEmployeeManagement.Text = "👥 Görevli Yönetimi";
             this.btnEmployeeManagement.UseVisualStyleBackColor = false;
+            this.btnEmployeeManagement.Cursor = Cursors.Hand;
             this.btnEmployeeManagement.Click += new EventHandler(this.btnEmployeeManagement_Click);
+            this.btnEmployeeManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnEmployeeManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnStudentManagement
+            // btnStudentManagement - Modern card tasarımı
             // 
-            this.btnStudentManagement.BackColor = Color.LightGreen;
-            this.btnStudentManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnStudentManagement.Location = new Point(270, 120);
+            this.btnStudentManagement.BackColor = Color.FromArgb(46, 204, 113);
+            this.btnStudentManagement.FlatStyle = FlatStyle.Flat;
+            this.btnStudentManagement.FlatAppearance.BorderSize = 0;
+            this.btnStudentManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnStudentManagement.ForeColor = Color.White;
+            this.btnStudentManagement.Location = new Point(360, 140);
             this.btnStudentManagement.Name = "btnStudentManagement";
-            this.btnStudentManagement.Size = new Size(200, 50);
+            this.btnStudentManagement.Size = new Size(220, 70);
             this.btnStudentManagement.Text = "🎓 Öğrenci Yönetimi";
             this.btnStudentManagement.UseVisualStyleBackColor = false;
+            this.btnStudentManagement.Cursor = Cursors.Hand;
             this.btnStudentManagement.Click += new EventHandler(this.btnStudentManagement_Click);
+            this.btnStudentManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnStudentManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnBookManagement
+            // btnBookManagement - Modern card tasarımı
             // 
-            this.btnBookManagement.BackColor = Color.LightYellow;
-            this.btnBookManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnBookManagement.Location = new Point(50, 190);
+            this.btnBookManagement.BackColor = Color.FromArgb(241, 196, 15);
+            this.btnBookManagement.FlatStyle = FlatStyle.Flat;
+            this.btnBookManagement.FlatAppearance.BorderSize = 0;
+            this.btnBookManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnBookManagement.ForeColor = Color.White;
+            this.btnBookManagement.Location = new Point(120, 230);
             this.btnBookManagement.Name = "btnBookManagement";
-            this.btnBookManagement.Size = new Size(200, 50);
+            this.btnBookManagement.Size = new Size(220, 70);
             this.btnBookManagement.Text = "📚 Kitap Yönetimi";
             this.btnBookManagement.UseVisualStyleBackColor = false;
+            this.btnBookManagement.Cursor = Cursors.Hand;
             this.btnBookManagement.Click += new EventHandler(this.btnBookManagement_Click);
+            this.btnBookManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnBookManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnBorrowManagement
+            // btnBorrowManagement - Modern card tasarımı
             // 
-            this.btnBorrowManagement.BackColor = Color.LightCoral;
-            this.btnBorrowManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnBorrowManagement.Location = new Point(270, 190);
+            this.btnBorrowManagement.BackColor = Color.FromArgb(231, 76, 60);
+            this.btnBorrowManagement.FlatStyle = FlatStyle.Flat;
+            this.btnBorrowManagement.FlatAppearance.BorderSize = 0;
+            this.btnBorrowManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnBorrowManagement.ForeColor = Color.White;
+            this.btnBorrowManagement.Location = new Point(360, 230);
             this.btnBorrowManagement.Name = "btnBorrowManagement";
-            this.btnBorrowManagement.Size = new Size(200, 50);
+            this.btnBorrowManagement.Size = new Size(220, 70);
             this.btnBorrowManagement.Text = "📋 Ödünç Kayıtları";
             this.btnBorrowManagement.UseVisualStyleBackColor = false;
+            this.btnBorrowManagement.Cursor = Cursors.Hand;
             this.btnBorrowManagement.Click += new EventHandler(this.btnBorrowManagement_Click);
+            this.btnBorrowManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnBorrowManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnReservationManagement
+            // btnReservationManagement - Modern card tasarımı
             // 
-            this.btnReservationManagement.BackColor = Color.LightGray;
-            this.btnReservationManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnReservationManagement.Location = new Point(50, 260);
+            this.btnReservationManagement.BackColor = Color.FromArgb(155, 89, 182);
+            this.btnReservationManagement.FlatStyle = FlatStyle.Flat;
+            this.btnReservationManagement.FlatAppearance.BorderSize = 0;
+            this.btnReservationManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnReservationManagement.ForeColor = Color.White;
+            this.btnReservationManagement.Location = new Point(120, 320);
             this.btnReservationManagement.Name = "btnReservationManagement";
-            this.btnReservationManagement.Size = new Size(200, 50);
+            this.btnReservationManagement.Size = new Size(220, 70);
             this.btnReservationManagement.Text = "📅 Rezervasyonlar";
             this.btnReservationManagement.UseVisualStyleBackColor = false;
+            this.btnReservationManagement.Cursor = Cursors.Hand;
             this.btnReservationManagement.Click += new EventHandler(this.btnReservationManagement_Click);
+            this.btnReservationManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnReservationManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnCategoryManagement
+            // btnCategoryManagement - Modern card tasarımı
             // 
-            this.btnCategoryManagement.BackColor = Color.LightGray;
-            this.btnCategoryManagement.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnCategoryManagement.Location = new Point(270, 260);
+            this.btnCategoryManagement.BackColor = Color.FromArgb(230, 126, 34);
+            this.btnCategoryManagement.FlatStyle = FlatStyle.Flat;
+            this.btnCategoryManagement.FlatAppearance.BorderSize = 0;
+            this.btnCategoryManagement.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnCategoryManagement.ForeColor = Color.White;
+            this.btnCategoryManagement.Location = new Point(360, 320);
             this.btnCategoryManagement.Name = "btnCategoryManagement";
-            this.btnCategoryManagement.Size = new Size(200, 50);
-            this.btnCategoryManagement.Text = "📋 Kategori Yönetimi";
+            this.btnCategoryManagement.Size = new Size(220, 70);
+            this.btnCategoryManagement.Text = "📂 Kategori Yönetimi";
             this.btnCategoryManagement.UseVisualStyleBackColor = false;
+            this.btnCategoryManagement.Cursor = Cursors.Hand;
             this.btnCategoryManagement.Click += new EventHandler(this.btnCategoryManagement_Click);
+            this.btnCategoryManagement.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnCategoryManagement.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnSettings
+            // btnSettings - Modern card tasarımı
             // 
-            this.btnSettings.BackColor = Color.LightGray;
-            this.btnSettings.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnSettings.Location = new Point(50, 330);
+            this.btnSettings.BackColor = Color.FromArgb(149, 165, 166);
+            this.btnSettings.FlatStyle = FlatStyle.Flat;
+            this.btnSettings.FlatAppearance.BorderSize = 0;
+            this.btnSettings.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnSettings.ForeColor = Color.White;
+            this.btnSettings.Location = new Point(240, 410);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new Size(200, 50);
+            this.btnSettings.Size = new Size(220, 70);
             this.btnSettings.Text = "⚙️ Ayarlar";
             this.btnSettings.UseVisualStyleBackColor = false;
+            this.btnSettings.Cursor = Cursors.Hand;
             this.btnSettings.Click += new EventHandler(this.btnSettings_Click);
+            this.btnSettings.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnSettings.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnLogout
+            // btnLogout - Küçük çıkış butonu (sol üst)
             // 
-            this.btnLogout.BackColor = Color.IndianRed;
-            this.btnLogout.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnLogout.BackColor = Color.FromArgb(192, 57, 43);
+            this.btnLogout.FlatStyle = FlatStyle.Flat;
+            this.btnLogout.FlatAppearance.BorderSize = 0;
+            this.btnLogout.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             this.btnLogout.ForeColor = Color.White;
-            this.btnLogout.Location = new Point(450, 20);
+            this.btnLogout.Location = new Point(20, 20);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new Size(100, 35);
-            this.btnLogout.Text = "🚪 Çıkış Yap";
+            this.btnLogout.Size = new Size(80, 30);
+            this.btnLogout.Text = "🚪 Çıkış";
             this.btnLogout.UseVisualStyleBackColor = false;
+            this.btnLogout.Cursor = Cursors.Hand;
             this.btnLogout.Click += new EventHandler(this.btnLogout_Click);
+            this.btnLogout.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnLogout.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // MainMenuForm
+            // MainMenuForm - Modern form tasarımı
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.BackColor = Color.WhiteSmoke;
-            this.ClientSize = new Size(580, 450);
+            this.BackColor = Color.FromArgb(236, 240, 241);
+            this.ClientSize = new Size(700, 520);
             this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnCategoryManagement);
@@ -317,6 +369,51 @@ namespace SimpleWindowsForm
         {
             // Tema değiştiğinde bu formu güncelle
             ThemeManager.ApplyTheme(this);
+        }
+        
+        // Modern hover efektleri
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Butonun rengini biraz daha açık yap
+                Color originalColor = button.BackColor;
+                int r = Math.Min(255, originalColor.R + 20);
+                int g = Math.Min(255, originalColor.G + 20);
+                int b = Math.Min(255, originalColor.B + 20);
+                button.BackColor = Color.FromArgb(r, g, b);
+                
+                // Hafif gölge efekti simülasyonu
+                button.FlatAppearance.BorderSize = 2;
+                button.FlatAppearance.BorderColor = Color.FromArgb(255, 255, 255, 100);
+            }
+        }
+        
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Orijinal renge geri dön
+                if (button == btnEmployeeManagement)
+                    button.BackColor = Color.FromArgb(52, 152, 219);
+                else if (button == btnStudentManagement)
+                    button.BackColor = Color.FromArgb(46, 204, 113);
+                else if (button == btnBookManagement)
+                    button.BackColor = Color.FromArgb(241, 196, 15);
+                else if (button == btnBorrowManagement)
+                    button.BackColor = Color.FromArgb(231, 76, 60);
+                else if (button == btnReservationManagement)
+                    button.BackColor = Color.FromArgb(155, 89, 182);
+                else if (button == btnCategoryManagement)
+                    button.BackColor = Color.FromArgb(230, 126, 34);
+                else if (button == btnSettings)
+                    button.BackColor = Color.FromArgb(149, 165, 166);
+                else if (button == btnLogout)
+                    button.BackColor = Color.FromArgb(192, 57, 43);
+                
+                // Border'ı kaldır
+                button.FlatAppearance.BorderSize = 0;
+            }
         }
         
         protected override void OnFormClosed(FormClosedEventArgs e)

@@ -50,108 +50,132 @@ namespace SimpleWindowsForm
             this.btnExit = new Button();
             this.lblInfo = new Label();
             this.SuspendLayout();
+            
+            // Modern form ayarları
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
 
             // 
-            // lblTitle
+            // lblTitle - Modern başlık tasarımı
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Bold, GraphicsUnit.Point);
-            this.lblTitle.ForeColor = Color.DarkBlue;
-            this.lblTitle.Location = new Point(80, 30);
+            this.lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold, GraphicsUnit.Point);
+            this.lblTitle.ForeColor = Color.FromArgb(41, 128, 185);
+            this.lblTitle.Location = new Point(60, 40);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new Size(240, 26);
+            this.lblTitle.Size = new Size(380, 41);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Kütüphane Yönetim Sistemi";
+            this.lblTitle.Text = "📚 Kütüphane Sistemi";
+            this.lblTitle.TextAlign = ContentAlignment.MiddleCenter;
 
             // 
-            // lblUsername
+            // lblUsername - Modern etiket tasarımı
             // 
             this.lblUsername.AutoSize = true;
-            this.lblUsername.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            this.lblUsername.Location = new Point(50, 100);
+            this.lblUsername.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            this.lblUsername.ForeColor = Color.FromArgb(52, 73, 94);
+            this.lblUsername.Location = new Point(80, 120);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new Size(85, 17);
-            this.lblUsername.Text = "Kullanıcı Adı:";
+            this.lblUsername.Size = new Size(105, 21);
+            this.lblUsername.Text = "👤 Kullanıcı Adı";
 
             // 
-            // txtUsername
+            // txtUsername - Modern textbox tasarımı
             // 
-            this.txtUsername.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            this.txtUsername.Location = new Point(150, 97);
+            this.txtUsername.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            this.txtUsername.Location = new Point(80, 145);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new Size(200, 23);
+            this.txtUsername.Size = new Size(340, 27);
             this.txtUsername.TabIndex = 1;
-            this.txtUsername.Text = "admin"; // Varsayılan değer
+            this.txtUsername.Text = "admin";
+            this.txtUsername.BorderStyle = BorderStyle.FixedSingle;
+            this.txtUsername.BackColor = Color.White;
+            this.txtUsername.ForeColor = Color.FromArgb(52, 73, 94);
 
             // 
-            // lblPassword
+            // lblPassword - Modern etiket tasarımı
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            this.lblPassword.Location = new Point(50, 140);
+            this.lblPassword.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            this.lblPassword.ForeColor = Color.FromArgb(52, 73, 94);
+            this.lblPassword.Location = new Point(80, 190);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new Size(37, 17);
-            this.lblPassword.Text = "Şifre:";
+            this.lblPassword.Size = new Size(68, 21);
+            this.lblPassword.Text = "🔒 Şifre";
 
             // 
-            // txtPassword
+            // txtPassword - Modern textbox tasarımı
             // 
-            this.txtPassword.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            this.txtPassword.Location = new Point(150, 137);
+            this.txtPassword.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
+            this.txtPassword.Location = new Point(80, 215);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new Size(200, 23);
+            this.txtPassword.PasswordChar = '●';
+            this.txtPassword.Size = new Size(340, 27);
             this.txtPassword.TabIndex = 2;
-            this.txtPassword.Text = "123456"; // Varsayılan değer
+            this.txtPassword.Text = "123456";
+            this.txtPassword.BorderStyle = BorderStyle.FixedSingle;
+            this.txtPassword.BackColor = Color.White;
+            this.txtPassword.ForeColor = Color.FromArgb(52, 73, 94);
             this.txtPassword.KeyPress += new KeyPressEventHandler(this.txtPassword_KeyPress);
 
             // 
-            // btnLogin
+            // btnLogin - Modern giriş butonu
             // 
-            this.btnLogin.BackColor = Color.LightGreen;
-            this.btnLogin.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnLogin.Location = new Point(150, 180);
+            this.btnLogin.BackColor = Color.FromArgb(46, 204, 113);
+            this.btnLogin.FlatStyle = FlatStyle.Flat;
+            this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnLogin.ForeColor = Color.White;
+            this.btnLogin.Location = new Point(80, 270);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new Size(90, 35);
+            this.btnLogin.Size = new Size(160, 45);
             this.btnLogin.TabIndex = 3;
-            this.btnLogin.Text = "Giriş Yap";
+            this.btnLogin.Text = "🚀 Giriş Yap";
             this.btnLogin.UseVisualStyleBackColor = false;
+            this.btnLogin.Cursor = Cursors.Hand;
             this.btnLogin.Click += new EventHandler(this.btnLogin_Click);
+            this.btnLogin.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnLogin.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // btnExit
+            // btnExit - Modern çıkış butonu
             // 
-            this.btnExit.BackColor = Color.LightCoral;
-            this.btnExit.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold, GraphicsUnit.Point);
-            this.btnExit.Location = new Point(260, 180);
+            this.btnExit.BackColor = Color.FromArgb(231, 76, 60);
+            this.btnExit.FlatStyle = FlatStyle.Flat;
+            this.btnExit.FlatAppearance.BorderSize = 0;
+            this.btnExit.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            this.btnExit.ForeColor = Color.White;
+            this.btnExit.Location = new Point(260, 270);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new Size(90, 35);
+            this.btnExit.Size = new Size(160, 45);
             this.btnExit.TabIndex = 4;
-            this.btnExit.Text = "Çıkış";
+            this.btnExit.Text = "❌ Çıkış";
             this.btnExit.UseVisualStyleBackColor = false;
+            this.btnExit.Cursor = Cursors.Hand;
             this.btnExit.Click += new EventHandler(this.btnExit_Click);
+            this.btnExit.MouseEnter += new EventHandler(this.Button_MouseEnter);
+            this.btnExit.MouseLeave += new EventHandler(this.Button_MouseLeave);
 
             // 
-            // lblInfo
+            // lblInfo - Modern bilgi etiketi
             // 
-            this.lblInfo.AutoSize = true;
-            this.lblInfo.Font = new Font("Microsoft Sans Serif", 8F, FontStyle.Italic, GraphicsUnit.Point);
-            this.lblInfo.ForeColor = Color.Gray;
-            this.lblInfo.Location = new Point(50, 240);
+            this.lblInfo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            this.lblInfo.ForeColor = Color.FromArgb(127, 140, 141);
+            this.lblInfo.Location = new Point(80, 340);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new Size(300, 60);
-            this.lblInfo.Text = "Varsayılan Kullanıcılar:\n" +
-                               "admin / 123456 (Yönetici)\n" +
-                               "librarian / 123456 (Kütüphaneci)\n" +
-                               "user / 123456 (Kullanıcı)";
+            this.lblInfo.Size = new Size(340, 80);
+            this.lblInfo.Text = "💡 Varsayılan Hesaplar:\n\n" +
+                               "🔹 admin / 123456 (Sistem Yöneticisi)\n" +
+                               "🔹 librarian / 123456 (Kütüphaneci)\n" +
+                               "🔹 user / 123456 (Normal Kullanıcı)";
+            this.lblInfo.TextAlign = ContentAlignment.TopLeft;
 
             // 
-            // LoginForm
+            // LoginForm - Modern form tasarımı
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.BackColor = Color.WhiteSmoke;
-            this.ClientSize = new Size(400, 320);
+            this.BackColor = Color.FromArgb(236, 240, 241);
+            this.ClientSize = new Size(500, 450);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnLogin);
@@ -165,7 +189,7 @@ namespace SimpleWindowsForm
             this.MinimizeBox = false;
             this.Name = "LoginForm";
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Kullanıcı Girişi";
+            this.Text = "Kütüphane Sistemi - Kullanıcı Girişi";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -220,6 +244,39 @@ namespace SimpleWindowsForm
             if (e.KeyChar == (char)Keys.Enter)
             {
                 btnLogin_Click(sender, e);
+            }
+        }
+        
+        // Modern hover efektleri
+        private void Button_MouseEnter(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Butonun rengini biraz daha açık yap
+                Color originalColor = button.BackColor;
+                int r = Math.Min(255, originalColor.R + 20);
+                int g = Math.Min(255, originalColor.G + 20);
+                int b = Math.Min(255, originalColor.B + 20);
+                button.BackColor = Color.FromArgb(r, g, b);
+                
+                // Hafif gölge efekti simülasyonu
+                button.FlatAppearance.BorderSize = 2;
+                button.FlatAppearance.BorderColor = Color.FromArgb(255, 255, 255, 100);
+            }
+        }
+        
+        private void Button_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is Button button)
+            {
+                // Orijinal renge geri dön
+                if (button == btnLogin)
+                    button.BackColor = Color.FromArgb(46, 204, 113);
+                else if (button == btnExit)
+                    button.BackColor = Color.FromArgb(231, 76, 60);
+                
+                // Border'ı kaldır
+                button.FlatAppearance.BorderSize = 0;
             }
         }
     }
