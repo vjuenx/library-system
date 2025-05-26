@@ -31,24 +31,77 @@ namespace SimpleWindowsForm
             {
                 dbContext = new AppDbContext();
                 
-                // Veritabanını oluştur (eğer yoksa)
+                // Veritabanını sil ve yeniden oluştur (geliştirme aşamasında)
+                dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
                 
                 // Varsayılan admin kullanıcısı oluştur
                 CreateDefaultUsers();
                 
-                // Test verisi ekle (eğer tablo boşsa)
+                // Test öğrenci verisi ekle (eğer tablo boşsa)
                 if (!dbContext.Students.Any())
                 {
-                    var testStudent = new Student
+                    var testStudents = new List<Student>
                     {
-                        Name = "Test Öğrenci",
-                        StudentNumber = "2024001",
-                        Email = "test@example.com",
-                        CreatedDate = DateTime.Now
+                        new Student
+                        {
+                            Name = "Ali Veli",
+                            StudentNumber = "2024001",
+                            Email = "ali.veli@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Ayşe Yılmaz",
+                            StudentNumber = "2024002",
+                            Email = "ayse.yilmaz@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Mehmet Demir",
+                            StudentNumber = "2024003",
+                            Email = "mehmet.demir@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Fatma Kaya",
+                            StudentNumber = "2024004",
+                            Email = "fatma.kaya@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Ahmet Özkan",
+                            StudentNumber = "2024005",
+                            Email = "ahmet.ozkan@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Zeynep Çelik",
+                            StudentNumber = "2024006",
+                            Email = "zeynep.celik@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Mustafa Arslan",
+                            StudentNumber = "2024007",
+                            Email = "mustafa.arslan@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        },
+                        new Student
+                        {
+                            Name = "Elif Şahin",
+                            StudentNumber = "2024008",
+                            Email = "elif.sahin@ogrenci.edu.tr",
+                            CreatedDate = DateTime.Now
+                        }
                     };
                     
-                    dbContext.Students.Add(testStudent);
+                    dbContext.Students.AddRange(testStudents);
                     dbContext.SaveChanges();
                 }
 

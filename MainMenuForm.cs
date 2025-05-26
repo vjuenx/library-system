@@ -325,7 +325,7 @@ namespace SimpleWindowsForm
             if (currentUser.Role.ToLower() == "user")
             {
                 // Normal kullanıcı için kitap arama/görüntüleme formu
-                var borrowForm = new BorrowManagementForm();
+                var borrowForm = new BorrowManagementForm(currentUser);
                 borrowForm.ShowDialog();
             }
             else

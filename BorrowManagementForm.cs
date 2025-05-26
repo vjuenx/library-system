@@ -21,14 +21,22 @@ namespace SimpleWindowsForm
         private Label lblSelectedBook;
         private TextBox txtSelectedBookInfo;
         
+        // Ödünç alma için yeni kontroller
+        private Label lblStudentSelect;
+        private ComboBox cmbStudents;
+        private Button btnBorrowBook;
+        
         private Database database;
         private Book? selectedBook;
+        private User currentUser;
 
-        public BorrowManagementForm()
+        public BorrowManagementForm(User user)
         {
+            currentUser = user;
             InitializeComponent();
             InitializeDatabase();
             LoadAvailableBooks();
+            LoadStudents();
         }
 
         private void InitializeDatabase()
@@ -39,7 +47,7 @@ namespace SimpleWindowsForm
         private void InitializeComponent()
         {
             this.Text = "Ödünç Alma";
-            this.Size = new Size(800, 600);
+            this.Size = new Size(800, 650);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -118,6 +126,27 @@ namespace SimpleWindowsForm
             txtSelectedBookInfo.ScrollBars = ScrollBars.Vertical;
             txtSelectedBookInfo.BackColor = Color.LightGray;
 
+            // Ödünç alma kontrolleri
+            lblStudentSelect = new Label();
+            lblStudentSelect.Text = "👤 Öğrenci Seçin:";
+            lblStudentSelect.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold);
+            lblStudentSelect.Location = new Point(leftX, startY + 280);
+            lblStudentSelect.Size = new Size(150, 20);
+
+            cmbStudents = new ComboBox();
+            cmbStudents.Location = new Point(leftX, startY + 305);
+            cmbStudents.Size = new Size(300, 25);
+            cmbStudents.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStudents.Font = new Font("Microsoft Sans Serif", 9F);
+
+            btnBorrowBook = new Button();
+            btnBorrowBook.Text = "📖 Ödünç Al";
+            btnBorrowBook.Location = new Point(leftX, startY + 340);
+            btnBorrowBook.Size = new Size(120, 35);
+            btnBorrowBook.BackColor = Color.LightGreen;
+            btnBorrowBook.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold);
+            btnBorrowBook.Click += btnBorrowBook_Click;
+
             // Kapat butonu
             btnClose = new Button();
             btnClose.Text = "🔙 Kapat";
@@ -130,7 +159,8 @@ namespace SimpleWindowsForm
             this.Controls.AddRange(new Control[] {
                 lblTitle, lblSearch, txtSearch, btnSearch, btnClear,
                 lblBookList, lstAvailableBooks, lblBookCount,
-                lblSelectedBook, txtSelectedBookInfo, btnClose
+                lblSelectedBook, txtSelectedBookInfo,
+                lblStudentSelect, cmbStudents, btnBorrowBook, btnClose
             });
         }
 
@@ -262,6 +292,127 @@ namespace SimpleWindowsForm
 
             // Durum rengini ayarla
             txtSelectedBookInfo.ForeColor = book.AvailableCopies > 0 ? Color.DarkGreen : Color.DarkRed;
+        }
+
+        private void LoadStudents()
+        {
+            try
+            {
+                using (var context = database.GetDbContext())
+                {
+                    var students = context.Students
+                        .OrderBy(s => s.Name)
+                        .ToList();
+
+                    cmbStudents.Items.Clear();
+                    cmbStudents.Items.Add("-- Öğrenci Seçin --");
+                    
+                    foreach (var student in students)
+                    {
+                        cmbStudents.Items.Add($"{student.Name} ({student.StudentNumber})");
+                    }
+                    
+                    cmbStudents.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Öğrenciler yüklenirken hata oluştu: {ex.Message}", 
+                    "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnBorrowBook_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Validasyonlar
+                if (selectedBook == null)
+                {
+                    MessageBox.Show("Lütfen ödünç almak istediğiniz kitabı seçin.", 
+                        "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (selectedBook.AvailableCopies <= 0)
+                {
+                    MessageBox.Show("Seçilen kitabın müsait kopyası bulunmamaktadır.", 
+                        "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (cmbStudents.SelectedIndex <= 0)
+                {
+                    MessageBox.Show("Lütfen bir öğrenci seçin.", 
+                        "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Seçilen öğrenciyi bul
+                Student? selectedStudent = null;
+                using (var context = database.GetDbContext())
+                {
+                    var students = context.Students.OrderBy(s => s.Name).ToList();
+                    int studentIndex = cmbStudents.SelectedIndex - 1; // İlk item "-- Öğrenci Seçin --" olduğu için -1
+                    if (studentIndex >= 0 && studentIndex < students.Count)
+                    {
+                        selectedStudent = students[studentIndex];
+                    }
+                }
+
+                if (selectedStudent == null)
+                {
+                    MessageBox.Show("Seçilen öğrenci bulunamadı.", 
+                        "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Ödünç alma işlemi
+                using (var context = database.GetDbContext())
+                {
+                    // Yeni ödünç kaydı oluştur
+                    var borrowRecord = new BorrowRecord
+                    {
+                        StudentId = selectedStudent.Id,
+                        BookId = selectedBook.Id,
+                        BorrowDate = DateTime.Now,
+                        DueDate = DateTime.Now.AddDays(14), // 2 hafta ödünç süresi
+                        IsReturned = false,
+                        CreatedBy = currentUser.Id, // Mevcut kullanıcının ID'si
+                        CreatedDate = DateTime.Now
+                    };
+
+                    context.BorrowRecords.Add(borrowRecord);
+
+                    // Kitabın müsait kopya sayısını azalt
+                    var book = context.Books.Find(selectedBook.Id);
+                    if (book != null)
+                    {
+                        book.AvailableCopies--;
+                        context.Books.Update(book);
+                    }
+
+                    context.SaveChanges();
+
+                    MessageBox.Show($"✅ Kitap başarıyla ödünç verildi!\n\n" +
+                                  $"📚 Kitap: {selectedBook.Title}\n" +
+                                  $"👤 Öğrenci: {selectedStudent.Name}\n" +
+                                  $"📅 Ödünç Tarihi: {DateTime.Now:dd.MM.yyyy}\n" +
+                                  $"📅 Teslim Tarihi: {DateTime.Now.AddDays(14):dd.MM.yyyy}", 
+                        "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Formu yenile
+                    LoadAvailableBooks();
+                    txtSelectedBookInfo.Clear();
+                    selectedBook = null;
+                    cmbStudents.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ödünç alma işlemi sırasında hata oluştu: {ex.Message}", 
+                    "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 } 
