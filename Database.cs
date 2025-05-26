@@ -31,8 +31,7 @@ namespace SimpleWindowsForm
             {
                 dbContext = new AppDbContext();
                 
-                // Veritabanını sil ve yeniden oluştur (geliştirme aşamasında)
-                dbContext.Database.EnsureDeleted();
+                // Veritabanını oluştur (eğer yoksa)
                 dbContext.Database.EnsureCreated();
                 
                 // Varsayılan admin kullanıcısı oluştur

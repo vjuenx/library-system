@@ -1,105 +1,109 @@
-# Proje Kurulum Rehberi - Hoca Bilgisayarı
+# 📚 Kütüphane Yönetim Sistemi - Kurulum Rehberi
 
-Bu rehber, projenin başka bir bilgisayarda nasıl çalıştırılacağını açıklar.
+## 🎯 Gereksinimler
 
-## Gereksinimler
+### Sistem Gereksinimleri
+- **İşletim Sistemi**: Windows 10/11
+- **RAM**: Minimum 4GB
+- **Disk Alanı**: 500MB boş alan
 
-### 1. .NET SDK Kurulumu
-Hocanızın bilgisayarında .NET SDK kurulu olmalı.
+### Yazılım Gereksinimleri
+- **.NET 9.0 SDK** (Otomatik yüklenecek)
+- **Git** (Opsiyonel - proje indirmek için)
 
-**Kontrol etmek için:**
+## 🚀 Kurulum Adımları
+
+### Yöntem 1: Git ile İndirme (Önerilen)
+
+1. **Git Kurulumu** (Eğer yoksa)
+   - [Git'i buradan indirin](https://git-scm.com/download/win)
+   - Varsayılan ayarlarla kurun
+
+2. **Projeyi İndirin**
+   ```bash
+   git clone https://github.com/vjuenx/library-system.git
+   cd library-system
+   ```
+
+### Yöntem 2: ZIP Dosyası ile İndirme
+
+1. **GitHub'dan İndirin**
+   - [Proje sayfasına gidin](https://github.com/vjuenx/library-system)
+   - "Code" → "Download ZIP" tıklayın
+   - ZIP dosyasını masaüstüne çıkarın
+
+## ⚡ Çalıştırma
+
+### Otomatik Kurulum ve Çalıştırma
+
+1. **Proje klasörünü açın**
+   - Windows Explorer ile proje klasörüne gidin
+   - Adres çubuğuna `cmd` yazın ve Enter'a basın
+
+2. **Uygulamayı çalıştırın**
+   ```bash
+   dotnet run
+   ```
+
+### İlk Çalıştırma
+- Uygulama ilk çalıştırıldığında:
+  - ✅ .NET 9.0 otomatik indirilecek (internet gerekli)
+  - ✅ SQLite veritabanı otomatik oluşturulacak
+  - ✅ Varsayılan kullanıcılar ve test verileri eklenecek
+  - ✅ Uygulama açılacak
+
+## 👥 Varsayılan Kullanıcılar
+
+| Kullanıcı Adı | Şifre  | Rol               | Yetkiler                    |
+|---------------|--------|-------------------|-----------------------------|
+| `admin`       | 123456 | Sistem Yöneticisi | Tüm işlemler               |
+| `librarian`   | 123456 | Kütüphaneci       | Kitap ve ödünç işlemleri   |
+| `user`        | 123456 | Normal Kullanıcı  | Sadece kitap görüntüleme   |
+
+## 📁 Proje Yapısı
+
+```
+library-system/
+├── 📄 SimpleWindowsForm.csproj    # Proje dosyası
+├── 📄 Program.cs                  # Ana program
+├── 📄 LoginForm.cs               # Giriş ekranı
+├── 📄 MainMenuForm.cs            # Ana menü
+├── 📄 Database.cs                # Veritabanı yönetimi
+├── 📁 Models/                    # Veri modelleri
+├── 📁 Data/                      # Entity Framework
+└── 📄 simple_ef_database.db      # SQLite veritabanı (otomatik oluşur)
+```
+
+## 🔧 Sorun Giderme
+
+### .NET 9.0 Kurulum Sorunu
 ```bash
-dotnet --version
+# Manuel .NET kurulumu
+winget install Microsoft.DotNet.SDK.9
 ```
 
-**Eğer kurulu değilse:**
-- [Microsoft .NET Download](https://dotnet.microsoft.com/download) adresinden .NET 8.0 veya 9.0 SDK'sını indirin
-- Kurulum dosyasını çalıştırın
-- Bilgisayarı yeniden başlatın
+### Veritabanı Sorunu
+- `simple_ef_database.db` dosyasını silin
+- Uygulamayı yeniden çalıştırın (otomatik oluşacak)
 
-## Proje Kurulum Adımları
+### Port/Bağlantı Sorunu
+- Antivirüs yazılımını geçici olarak kapatın
+- Windows Defender'da proje klasörünü istisna ekleyin
 
-### Adım 1: Proje Dosyalarını Kopyalayın
-Tüm proje klasörünü hocanızın bilgisayarına kopyalayın:
-```
-simple/
-├── SimpleWindowsForm.csproj
-├── Program.cs
-├── Form1.cs
-├── Database.cs
-├── Models/
-│   └── Student.cs
-├── Data/
-│   └── AppDbContext.cs
-├── README.md
-└── KURULUM_REHBERI.md
-```
+## 📞 Destek
 
-### Adım 2: Terminal/Komut Satırını Açın
-- Windows: `cmd` veya `PowerShell`
-- Proje klasörüne gidin: `cd C:\path\to\simple`
+**Geliştirici**: vjuenx  
+**Email**: soylubatuhan13@gmail.com  
+**GitHub**: https://github.com/vjuenx/library-system
 
-### Adım 3: Paketleri Geri Yükleyin
-```bash
-dotnet restore
-```
+## 🎉 Başarılı Kurulum Kontrolü
 
-### Adım 4: Projeyi Derleyin
-```bash
-dotnet build
-```
+Uygulama başarıyla çalıştığında:
+- ✅ Login ekranı açılır
+- ✅ `admin/123456` ile giriş yapabilirsiniz
+- ✅ Ana menüde tüm modüller görünür
+- ✅ Test verileri yüklenmiş olur
 
-### Adım 5: Projeyi Çalıştırın
-```bash
-dotnet run
-```
+---
 
-## Otomatik Kurulum (Tek Komut)
-
-Proje klasöründe aşağıdaki komutu çalıştırın:
-```bash
-dotnet restore && dotnet build && dotnet run
-```
-
-## Beklenen Sonuç
-
-Uygulama çalıştığında:
-1. ✅ Windows Forms penceresi açılır
-2. ✅ "Entity Framework Projesi" başlığı görünür
-3. ✅ "Veritabanı Bağlantısı: Başarılı" mesajı
-4. ✅ "Entity Framework: Aktif (1 öğrenci)" mesajı
-5. ✅ "EF Durumunu Kontrol Et" butonu çalışır
-
-## Veritabanı
-
-- **Otomatik oluşturulur**: `simple_ef_database.db`
-- **Konum**: `bin\Debug\net9.0-windows\` klasöründe
-- **Test verisi**: Otomatik olarak 1 öğrenci eklenir
-
-## Sorun Giderme
-
-### Problem: ".NET SDK bulunamadı"
-**Çözüm**: .NET SDK'yı yükleyin ve PATH'e ekleyin
-
-### Problem: "Paket geri yüklenemedi"
-**Çözüm**: İnternet bağlantısını kontrol edin, tekrar deneyin:
-```bash
-dotnet restore --force
-```
-
-### Problem: "Veritabanı hatası"
-**Çözüm**: Klasör yazma izinlerini kontrol edin
-
-### Problem: "Form açılmıyor"
-**Çözüm**: Windows'ta çalıştığınızdan emin olun
-
-## Proje Özellikleri
-
-- ✅ **Taşınabilir**: Hiçbir manuel konfigürasyon gerekmez
-- ✅ **Otomatik**: Veritabanı kendisi oluşturulur
-- ✅ **Basit**: Tek komutla çalışır
-- ✅ **Entity Framework**: Code First yaklaşımı
-
-## İletişim
-
-Herhangi bir sorun yaşanırsa, proje sahibiyle iletişime geçin. 
+**Not**: İlk çalıştırma internet bağlantısı gerektirir (.NET indirme için). Sonraki çalıştırmalar offline çalışır. 
